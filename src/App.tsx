@@ -1,7 +1,9 @@
+import TodoComponent from "./components/Todo/TodoComponent";
+
 function App() {
 	return (
-		<div className=''>
-
+		<div>
+      <TodoComponent />
 		</div>
 	);
 }
