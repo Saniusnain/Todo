@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        gilda: ["Gilda Display", 'serif'],
+        // dosis: ["Dosis","sans-serif"],
+        // poppins: ["Poppins","sans-serif"]
+       },
+    },
   },
   plugins: [],
 }

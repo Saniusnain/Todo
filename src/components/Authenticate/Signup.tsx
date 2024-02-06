@@ -6,6 +6,8 @@ const Signup = () => {
 	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+
+	const [gender, setGender] = useState('');
 	const PASSWORD_ERROR =
 		'Password should be 6-40 characters long and contain at least one uppercase letter, one lowercase letter, and one digit';
 
@@ -29,7 +31,7 @@ const Signup = () => {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center h-screen font-mono '>
+		<div className='flex flex-col items-center justify-center h-screen'>
 			<h1 className='flex items-center justify-center mb-10 font-bold text-center text-white max-sm:flex-col sm:flex-row max-sm:text-3xl sm:text-5xl'>
 				Task Flow{' '}
 				<span className='ml-4 text-6xl'>

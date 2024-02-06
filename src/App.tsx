@@ -9,7 +9,7 @@ import Signup from './components/Authenticate/Signup';
 
 function App() {
 	return (
-		<div className='bg-blue-800'>
+		<div className='bg-blue-800 '>
 			{/* <TodoComponent />
 			<Login /> */}
 			<Signup />
