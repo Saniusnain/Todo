@@ -1,7 +1,6 @@
-import TodoComponent from "./components/Todo/TodoComponent";
+import TodoComponent from './components/Todo/TodoComponent';
 import Login from './components/Authenticate/Login';
 import Signup from './components/Authenticate/Signup';
-
 
 // import {
 //   createBrowserRouter,
@@ -10,11 +9,11 @@ import Signup from './components/Authenticate/Signup';
 
 function App() {
 	return (
-		<div>
-      <TodoComponent />
-      <Login />
-      < Signup/>
-		</div>
+		<>
+			{/* <TodoComponent />
+			<Login /> */}
+			<Signup />
+		</>
 	);
 }
 
