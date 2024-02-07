@@ -7,9 +7,10 @@ const Signup = () => {
 	const [password, setPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const [gender, setGender] = useState('');
+	const [showPassword,setShowPassword] = useState(false)
 
 	const PASSWORD_ERROR =
-		'Password should be 6-40 characters long and contain at least one uppercase letter, one lowercase letter, and one digit';
+		'Password should be 6-12 characters long and contain at least one uppercase letter, one lowercase letter, and one digit';
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -50,7 +51,7 @@ const Signup = () => {
 				>
 					<input
 						type='email'
-						placeholder='email'
+						placeholder='Email'
 						value={email}
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
 							setEmail(e.target.value)
@@ -60,7 +61,7 @@ const Signup = () => {
 					/>
 					<input
 						type='text'
-						placeholder='name'
+						placeholder='Name'
 						value={name}
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
 							setName(e.target.value)
@@ -74,15 +75,25 @@ const Signup = () => {
 							setGender(e.target.value)
 						}
 						value={gender}
-						className='w-1/2 px-2 py-3 text-gray-900 bg-transparent rounded outline-none max-sm:w-4/5 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
+						className={`w-1/2 px-2 py-3 ${
+							gender === 'male' || gender === 'female'
+								? 'text-gray-900'
+								: 'text-gray-400'
+						} bg-transparent rounded outline-none max-sm:text-sm max-sm:w-4/5 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300`}
 					>
-						<option selected>Choose a gender</option>
-						<option value='male'>Male</option>
-						<option value='female'>Female</option>
+						<option selected className='max-sm:text-sm '>
+							Choose a gender
+						</option>
+						<option value='male' className='max-sm:text-sm '>
+							Male
+						</option>
+						<option value='female' className='max-sm:text-sm '>
+							Female
+						</option>
 					</select>
 					<input
-						type='password'
-						placeholder='password'
+						type={showPassword ? 'text' : 'password'}
+						placeholder='Password'
 						value={password}
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
 							setPassword(e.target.value)
@@ -90,17 +101,34 @@ const Signup = () => {
 						className='px-2 py-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
 					/>
+					<div className='flex items-center w-2/4 max-sm:w-4/5'>
+						<input
+							id='default-checkbox'
+							type='checkbox'
+							value=''
+							className='text-blue-600 bg-gray-100 border-gray-300 rounded '
+							onChange={() => setShowPassword(!showPassword)}
+						/>
+						<label
+							htmlFor='default-checkbox'
+							className='text-sm font-medium text-black ms-2 '
+						>
+							Show Password
+						</label>
+					</div>
+
 					<div className=' max-sm:pl-8 sm:w-2/4'>
 						<ul className='list-disc list-inside'>
 							{[
 								'At least 6 characters',
 								'one uppercase letter and one lowercase letter',
-								'one digit'
+								'one digit',
 							].map((rule) => {
 								return <li className=' max-sm:text-sm text-md'>{rule}</li>;
 							})}
 						</ul>
 					</div>
+
 					<button
 						className='max-sm:px-2 max-sm:py-1 max-sm:text-lg sm:px-4 sm:py-2 my-4 sm:text-xl font-semibold text-white transition bg-pink-300 rounded  hover:translate-y-0.5 hover:bg-pink-400'
 						type='submit'
