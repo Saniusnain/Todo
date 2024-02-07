@@ -20,6 +20,13 @@ const Signup = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [loading, setLoading] = useState(false);
 
+	const resetStates = () => {
+		setEmail("");
+		setName("");
+		setPassword("");
+		setGender("");
+	};
+
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		setErrorMessage('');
 		e.preventDefault();
@@ -68,6 +75,7 @@ const Signup = () => {
 					draggable: true, 
 					theme: 'light',
 				});
+				resetStates();
 			}
 			console.log(result);
 		} catch (error: any) {
@@ -89,7 +97,7 @@ const Signup = () => {
 			<div>
 				<form
 					onSubmit={handleSubmit}
-					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-12 sm:pb-10 space-y-3 bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
+					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-12 sm:pb-10   bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
 				>
 					<input
 						type='email'
@@ -98,7 +106,7 @@ const Signup = () => {
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
 							setEmail(maxLength(e.target.value))
 						}
-						className='px-2 py-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
+						className='px-2 py-3 mb-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
 					/>
 					<input
@@ -108,7 +116,7 @@ const Signup = () => {
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
 							setName(maxLength(e.target.value))
 						}
-						className='px-2 py-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
+						className='px-2 py-3 mb-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
 					/>
 					<select
@@ -119,7 +127,7 @@ const Signup = () => {
 							)
 						}
 						defaultValue={gender}
-						className={`w-1/2 px-2 py-3 ${
+						className={` mb-3 w-1/2 px-2 py-3 ${
 							gender === 'male' || gender === 'female'
 								? 'text-gray-900'
 								: 'text-gray-400'
@@ -140,10 +148,10 @@ const Signup = () => {
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
 							setPassword(maxLength(e.target.value))
 						}
-						className='px-2 py-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
+						className='px-2 py-3 mb-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
 					/>
-					<div className='flex items-center w-2/4 max-sm:w-4/5'>
+					<div className='flex items-center w-2/4 mb-3 max-sm:w-4/5'>
 						<input
 							id='default-checkbox'
 							type='checkbox'
@@ -159,7 +167,7 @@ const Signup = () => {
 						</label>
 					</div>
 
-					<div className=' max-sm:px-3 sm:w-2/4'>
+					<div className='mb-3 max-sm:px-3 sm:w-2/4'>
 						<ul className='list-disc list-inside '>
 							{[
 								'At least 6 characters',
@@ -176,11 +184,15 @@ const Signup = () => {
 					</div>
 
 					<button
-						className='max-sm:px-2 max-sm:py-1 max-sm:text-md sm:px-4 sm:py-2 my-4 sm:text-xl font-semibold text-white transition bg-pink-300 rounded  hover:translate-y-0.5 hover:bg-pink-400'
+						className='max-sm:w-4/5 sm:w-2/4 max-sm:px-2 max-sm:py-1 max-sm:text-md sm:px-4 sm:py-2 sm:text-xl font-semibold text-white transition bg-pink-300 rounded  hover:translate-y-0.5 hover:bg-pink-400'
 						type='submit'
 					>
 						{loading ? <Loader /> : 'Register'}
 					</button>
+					<div className='flex justify-between text-sm border-white max-sm:w-4/5 sm:w-2/4'>
+						<p className='text-black cursor-pointer hover:underline decoration-black'>Login</p>
+						<p className='text-black cursor-pointer hover:underline decoration-black'>Forgot Password</p>
+					</div>
 					{errorMessage && (
 						<h1 className='font-semibold text-center text-red-500 max-sm:px-3 sm:w-2/4 sm:text-sm'>
 							{errorMessage}
