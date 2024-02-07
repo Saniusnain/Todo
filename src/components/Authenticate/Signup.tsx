@@ -3,6 +3,12 @@ import { TiWavesOutline } from 'react-icons/ti';
 import Loader from '../UtilComponents/Loader';
 import axios from 'axios';
 import { maxLength } from '../../utils/utilFunctions';
+import {
+	PASSWORD_ERROR,
+	NAME_ERROR,
+	EMAIL_ERROR,
+	GENDER_ERROR,
+} from '../../utils/ErrorMessages';
 
 const Signup = () => {
 	const [email, setEmail] = useState('');
@@ -11,20 +17,19 @@ const Signup = () => {
 	const [gender, setGender] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+	const [loading, setLoading] = useState(false);
 
-	const PASSWORD_ERROR =
-		'Password should be 6-12 characters long and contain at least one uppercase letter, one lowercase letter, and one digit';
-
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		setErrorMessage('');
 		e.preventDefault();
 		if (name.length < 3) {
-			setErrorMessage('Name must be at least 3 characters');
+			setErrorMessage(NAME_ERROR);
 			return;
 		}
 
 		const emailRegex = /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 		if (!email.match(emailRegex)) {
-			setErrorMessage('Invalid Email format');
+			setErrorMessage(EMAIL_ERROR);
 			return false;
 		}
 
@@ -34,7 +39,32 @@ const Signup = () => {
 		}
 
 		if (gender === '') {
-			setErrorMessage('Gender cannot be empty');
+			setErrorMessage(GENDER_ERROR);
+			return;
+		}
+
+		const body = {
+			email: email,
+			name: name,
+			password: password,
+			gender: gender,
+		};
+
+		console.log(body);
+		try {
+			setLoading(true);
+			const result = await axios.post(
+				'http://localhost:5000/user/register',
+				body
+			);
+			if (result && result.status === 201) {
+				setLoading(false);
+			}
+			console.log(result);
+		} catch (error: any) {
+			setLoading(false);
+			console.log(error.response.data.error);
+			setErrorMessage(error.response.data.error);
 		}
 	};
 
@@ -46,6 +76,49 @@ const Signup = () => {
 					<TiWavesOutline />
 				</span>
 			</h1>
+
+			<div
+				id='toast-success'
+				className='flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow animate-pulse'
+				role='alert'
+			>
+				<div className='inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg animate-pulse '>
+					<svg
+						className='w-5 h-5'
+						aria-hidden='true'
+						xmlns='http://www.w3.org/2000/svg'
+						fill='currentColor'
+						viewBox='0 0 20 20'
+					>
+						<path d='M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z' />
+					</svg>
+					<span className='sr-only'>Check icon</span>
+				</div>
+				<div className='text-sm font-semibold ms-3'>Registered successfully.</div>
+				<button
+					type='button'
+					className='ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8'
+					data-dismiss-target='#toast-success'
+					aria-label='Close'
+				>
+					<span className='sr-only'>Close</span>
+					<svg
+						className='w-3 h-3'
+						aria-hidden='true'
+						xmlns='http://www.w3.org/2000/svg'
+						fill='none'
+						viewBox='0 0 14 14'
+					>
+						<path
+							stroke='currentColor'
+							stroke-linecap='round'
+							stroke-linejoin='round'
+							stroke-width='2'
+							d='m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6'
+						/>
+					</svg>
+				</button>
+			</div>
 
 			<div>
 				<form
@@ -75,7 +148,9 @@ const Signup = () => {
 					<select
 						id='countries'
 						onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-							setGender(e.target.value)
+							setGender(
+								e.target.value === 'Choose a gender' ? '' : e.target.value
+							)
 						}
 						defaultValue={gender}
 						className={`w-1/2 px-2 py-3 ${
@@ -84,7 +159,7 @@ const Signup = () => {
 								: 'text-gray-400'
 						} bg-transparent rounded font-normal outline-none max-sm:text-sm max-sm:w-4/5 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300`}
 					>
-						<option className='max-sm:text-sm '>Choose a gender</option>
+						<option className='max-sm:text-sm'>Choose a gender</option>
 						<option value='male' className='max-sm:text-sm '>
 							Male
 						</option>
@@ -138,10 +213,10 @@ const Signup = () => {
 						className='max-sm:px-2 max-sm:py-1 max-sm:text-md sm:px-4 sm:py-2 my-4 sm:text-xl font-semibold text-white transition bg-pink-300 rounded  hover:translate-y-0.5 hover:bg-pink-400'
 						type='submit'
 					>
-						Register
+						{loading ? <Loader /> : 'Register'}
 					</button>
 					{errorMessage && (
-						<h1 className='font-semibold text-red-500 sm:text-xl'>
+						<h1 className='font-semibold text-center text-red-500 max-sm:px-3 sm:w-2/4 sm:text-sm'>
 							{errorMessage}
 						</h1>
 					)}
