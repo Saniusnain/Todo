@@ -10,6 +10,7 @@ import {
 	GENDER_ERROR,
 } from '../../utils/ErrorMessages';
 import { toast, ToastContainer } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
 	const [email, setEmail] = useState('');
@@ -190,7 +191,7 @@ const Signup = () => {
 						{loading ? <Loader /> : 'Register'}
 					</button>
 					<div className='flex justify-between text-sm border-white max-sm:w-4/5 sm:w-2/4'>
-						<p className='text-black cursor-pointer hover:underline decoration-black'>Login</p>
+						<p className='text-black cursor-pointer hover:underline decoration-black'><Link to="/login">Login</Link></p>
 						<p className='text-black cursor-pointer hover:underline decoration-black'>Forgot Password</p>
 					</div>
 					{errorMessage && (
