@@ -7,7 +7,7 @@ const Signup = () => {
 	const [password, setPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 	const [gender, setGender] = useState('');
-	const [showPassword,setShowPassword] = useState(false)
+	const [showPassword, setShowPassword] = useState(false);
 
 	const PASSWORD_ERROR =
 		'Password should be 6-12 characters long and contain at least one uppercase letter, one lowercase letter, and one digit';
@@ -36,7 +36,7 @@ const Signup = () => {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center h-screen'>
+		<div className='flex flex-col items-center justify-center h-screen font-space'>
 			<h1 className='flex items-center justify-center font-bold text-center text-white max-sm:mb-5 sm:mb-10 max-sm:flex-col sm:flex-row max-sm:text-3xl sm:text-5xl'>
 				Task Flow{' '}
 				<span className='ml-4 text-6xl'>
@@ -74,14 +74,14 @@ const Signup = () => {
 						onChange={(e: ChangeEvent<HTMLSelectElement>) =>
 							setGender(e.target.value)
 						}
-						value={gender}
+						defaultValue={gender}
 						className={`w-1/2 px-2 py-3 ${
 							gender === 'male' || gender === 'female'
 								? 'text-gray-900'
 								: 'text-gray-400'
-						} bg-transparent rounded outline-none max-sm:text-sm max-sm:w-4/5 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300`}
+						} bg-transparent rounded font-normal outline-none max-sm:text-sm max-sm:w-4/5 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300`}
 					>
-						<option selected className='max-sm:text-sm '>
+						<option  className='max-sm:text-sm '>
 							Choose a gender
 						</option>
 						<option value='male' className='max-sm:text-sm '>
@@ -118,13 +118,13 @@ const Signup = () => {
 					</div>
 
 					<div className=' max-sm:pl-8 sm:w-2/4'>
-						<ul className='list-disc list-inside'>
+						<ul className='list-disc list-inside '>
 							{[
 								'At least 6 characters',
 								'one uppercase letter and one lowercase letter',
 								'one digit',
 							].map((rule) => {
-								return <li className=' max-sm:text-sm text-md'>{rule}</li>;
+								return <li key={rule} className='text-sm max-sm:text-sm'>{rule}</li>;
 							})}
 						</ul>
 					</div>

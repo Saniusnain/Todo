@@ -8,9 +8,7 @@ export default {
     extend: {
       fontFamily: {
         gilda: ["Gilda Display", 'serif'],
-        // dosis: ["Dosis","sans-serif"],
-        // poppins: ["Poppins","sans-serif"]
-       },
+        },
     },
   },
   plugins: [],
