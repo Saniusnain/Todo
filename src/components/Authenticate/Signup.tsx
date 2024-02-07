@@ -1,13 +1,16 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { TiWavesOutline } from 'react-icons/ti';
+import Loader from '../UtilComponents/Loader';
+import axios from 'axios';
+import { maxLength } from '../../utils/utilFunctions';
 
 const Signup = () => {
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
-	const [errorMessage, setErrorMessage] = useState('');
 	const [gender, setGender] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const PASSWORD_ERROR =
 		'Password should be 6-12 characters long and contain at least one uppercase letter, one lowercase letter, and one digit';
@@ -47,14 +50,14 @@ const Signup = () => {
 			<div>
 				<form
 					onSubmit={handleSubmit}
-					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-12 sm:pb-10 space-y-5 bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
+					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-12 sm:pb-10 space-y-3 bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
 				>
 					<input
 						type='email'
 						placeholder='Email'
 						value={email}
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
-							setEmail(e.target.value)
+							setEmail(maxLength(e.target.value))
 						}
 						className='px-2 py-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
@@ -64,7 +67,7 @@ const Signup = () => {
 						placeholder='Name'
 						value={name}
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
-							setName(e.target.value)
+							setName(maxLength(e.target.value))
 						}
 						className='px-2 py-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
@@ -81,9 +84,7 @@ const Signup = () => {
 								: 'text-gray-400'
 						} bg-transparent rounded font-normal outline-none max-sm:text-sm max-sm:w-4/5 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300`}
 					>
-						<option  className='max-sm:text-sm '>
-							Choose a gender
-						</option>
+						<option className='max-sm:text-sm '>Choose a gender</option>
 						<option value='male' className='max-sm:text-sm '>
 							Male
 						</option>
@@ -96,7 +97,7 @@ const Signup = () => {
 						placeholder='Password'
 						value={password}
 						onChange={(e: ChangeEvent<HTMLInputElement>) =>
-							setPassword(e.target.value)
+							setPassword(maxLength(e.target.value))
 						}
 						className='px-2 py-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
@@ -117,20 +118,24 @@ const Signup = () => {
 						</label>
 					</div>
 
-					<div className=' max-sm:pl-8 sm:w-2/4'>
+					<div className=' max-sm:px-3 sm:w-2/4'>
 						<ul className='list-disc list-inside '>
 							{[
 								'At least 6 characters',
-								'one uppercase letter and one lowercase letter',
-								'one digit',
+								'1 uppercase and 1 lowercase letter',
+								'1 digit',
 							].map((rule) => {
-								return <li key={rule} className='text-sm max-sm:text-sm'>{rule}</li>;
+								return (
+									<li key={rule} className='text-sm'>
+										{rule}
+									</li>
+								);
 							})}
 						</ul>
 					</div>
 
 					<button
-						className='max-sm:px-2 max-sm:py-1 max-sm:text-lg sm:px-4 sm:py-2 my-4 sm:text-xl font-semibold text-white transition bg-pink-300 rounded  hover:translate-y-0.5 hover:bg-pink-400'
+						className='max-sm:px-2 max-sm:py-1 max-sm:text-md sm:px-4 sm:py-2 my-4 sm:text-xl font-semibold text-white transition bg-pink-300 rounded  hover:translate-y-0.5 hover:bg-pink-400'
 						type='submit'
 					>
 						Register
