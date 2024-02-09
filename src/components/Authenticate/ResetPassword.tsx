@@ -20,6 +20,8 @@ const ResetPassword = () => {
 
 	const resetStates = () => {
 		setEmail('');
+		setPassword('');
+		setConfirmPassword('');
 	};
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -53,7 +55,7 @@ const ResetPassword = () => {
 				'http://localhost:5000/user/reset-password',
 				body
 			);
-			if (result && result.status === 200) {
+			if (result && result.status === 201) {
 				setLoading(false);
 				toast('🎉 Reset Successfully!', {
 					position: 'top-right',
@@ -84,11 +86,11 @@ const ResetPassword = () => {
 			<div>
 				<form
 					onSubmit={handleSubmit}
-					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-5 sm:pb-10 bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
+					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-12 sm:pb-10 bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
 				>
-					<h1 className='flex items-center justify-center mb-5 font-bold text-center text-blue-800 sm:text-2xl max-sm:flex-col sm:flex-row'>
+					{/* <h1 className='flex items-center justify-center mb-5 font-bold text-center text-blue-800 sm:text-2xl max-sm:flex-col sm:flex-row'>
 						Reset Password
-					</h1>
+					</h1> */}
 					<input
 						type='email'
 						placeholder='Email'
@@ -156,7 +158,7 @@ const ResetPassword = () => {
 
 					<Button
 						loading={loading}
-						text='Submit'
+						text='Reset Password'
 						links={[
 							{ link: '/signup', text: 'SignUp' },
 							{ link: '/login', text: 'Login' },

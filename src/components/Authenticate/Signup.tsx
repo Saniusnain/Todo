@@ -183,7 +183,7 @@ const Signup = () => {
 
 					<Button
 						loading={loading}
-						text='Register'
+						text='SignUp'
 						links={[
 							{ link: '/login', text: 'Login' },
 							{ link: '/reset-password', text: 'Reset Password' },
