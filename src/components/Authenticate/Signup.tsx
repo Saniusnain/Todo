@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { TiWavesOutline } from 'react-icons/ti';
 import Loader from '../UtilComponents/Loader';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { maxLength } from '../../utils/utilFunctions';
 import {
 	PASSWORD_ERROR,
@@ -22,10 +22,10 @@ const Signup = () => {
 	const [loading, setLoading] = useState(false);
 
 	const resetStates = () => {
-		setEmail("");
-		setName("");
-		setPassword("");
-		setGender("");
+		setEmail('');
+		setName('');
+		setPassword('');
+		setGender('');
 	};
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -62,7 +62,7 @@ const Signup = () => {
 		console.log(body);
 		try {
 			setLoading(true);
-			const result = await axios.post(
+			const result: AxiosResponse = await axios.post(
 				'http://localhost:5000/user/register',
 				body
 			);
@@ -73,16 +73,22 @@ const Signup = () => {
 					autoClose: 2000,
 					hideProgressBar: false,
 					closeOnClick: true,
-					draggable: true, 
+					draggable: true,
 					theme: 'light',
 				});
 				resetStates();
 			}
 			console.log(result);
-		} catch (error: any) {
+		} catch (error) {
 			setLoading(false);
-			console.log(error.response.data.error);
-			setErrorMessage(error.response.data.error);
+
+			if (axios.isAxiosError(error)) {
+				console.log('error message: ', error.message);
+				setErrorMessage(error.response?.data.error);
+			} else {
+				console.log('unexpected error: ', error);
+				setErrorMessage('An unexpected error occurred');
+			}
 		}
 	};
 
@@ -191,8 +197,12 @@ const Signup = () => {
 						{loading ? <Loader /> : 'Register'}
 					</button>
 					<div className='flex justify-between text-sm border-white max-sm:w-4/5 sm:w-2/4'>
-						<p className='text-black cursor-pointer hover:underline decoration-black'><Link to="/login">Login</Link></p>
-						<p className='text-black cursor-pointer hover:underline decoration-black'>Forgot Password</p>
+						<p className='text-black cursor-pointer hover:underline decoration-black'>
+							<Link to='/login'>Login</Link>
+						</p>
+						<p className='text-black cursor-pointer hover:underline decoration-black'>
+							Forgot Password
+						</p>
 					</div>
 					{errorMessage && (
 						<h1 className='font-semibold text-center text-red-500 max-sm:px-3 sm:w-2/4 sm:text-sm'>
