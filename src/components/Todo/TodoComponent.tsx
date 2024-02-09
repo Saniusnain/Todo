@@ -2,8 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import { TiWavesOutline } from "react-icons/ti";
 import { MaleAvatars } from "../../assets/MaleAvatars";
+import { FemaleAvatars } from "../../assets/FemaleAvatars";
 import { TbLogout2 } from "react-icons/tb";
-import { clearStorage } from "../../utils/utilFunctions";
+import { clearStorage, getUserGender } from "../../utils/utilFunctions";
 
 // interface Todo {
 // 	_id: string;
@@ -14,6 +15,7 @@ import { clearStorage } from "../../utils/utilFunctions";
 
 const TodoComponent = () => {
   const navigate = useNavigate();
+  const gender = getUserGender();
   // const [listItems, setListItems] = useState<Todo[]>([]);
   // const [completedListItems, setcompletedListItems] = useState<Todo[]>([]);
   // const [listItem, setListItem] = useState<string>('');
@@ -36,7 +38,12 @@ const TodoComponent = () => {
             onClick={() => logOut()}
           />
           <img
-            src={MaleAvatars[Math.floor(Math.random() * 3)]}
+            loading="lazy"
+            src={
+              gender === "male"
+                ? MaleAvatars[Math.floor(Math.random() * 3)]
+                : FemaleAvatars[Math.floor(Math.random() * 3)]
+            }
             alt="avatar"
             className="bg-white rounded-full max-sm:w-10 max-sm:h-10 sm:w-12 sm:h-12"
           />
