@@ -34,7 +34,6 @@ const Login = () => {
 			password: password,
 		};
 
-		console.log(body);
 		try {
 			setLoading(true);
 			const result: AxiosResponse = await axios.post(
