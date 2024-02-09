@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { TiWavesOutline } from 'react-icons/ti';
 import Button from '../UtilComponents/Button';
+import LogoHeader from '../UtilComponents/LogoHeader';
 import axios, { AxiosResponse } from 'axios';
 import { maxLength } from '../../utils/utilFunctions';
 import { EMAIL_ERROR } from '../../utils/ErrorMessages';
@@ -61,12 +61,7 @@ const ForgetPassword = () => {
 
 	return (
 		<div className='flex flex-col items-center justify-center h-screen font-space'>
-			<h1 className='flex items-center justify-center font-bold text-center text-white max-sm:mb-5 sm:mb-10 max-sm:flex-col sm:flex-row max-sm:text-3xl sm:text-5xl'>
-				Task Flow{' '}
-				<span className='ml-4 text-6xl'>
-					<TiWavesOutline />
-				</span>
-			</h1>
+			<LogoHeader />
 
 			<div>
 				<form
