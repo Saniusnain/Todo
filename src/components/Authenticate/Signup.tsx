@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { TiWavesOutline } from 'react-icons/ti';
-import Loader from '../UtilComponents/Loader';
+ import Button from '../UtilComponents/Button';
 import axios, { AxiosResponse } from 'axios';
 import { maxLength } from '../../utils/utilFunctions';
 import {
@@ -10,7 +10,6 @@ import {
 	GENDER_ERROR,
 } from '../../utils/ErrorMessages';
 import { toast, ToastContainer } from 'react-toastify';
-import { Link } from 'react-router-dom';
 
 const Signup = () => {
 	const [email, setEmail] = useState('');
@@ -190,20 +189,8 @@ const Signup = () => {
 						</ul>
 					</div>
 
-					<button
-						className='max-sm:w-4/5 sm:w-2/4 max-sm:px-2 max-sm:py-1 max-sm:text-md sm:px-4 sm:py-2 sm:text-xl font-semibold text-white transition bg-pink-300 rounded  hover:translate-y-0.5 hover:bg-pink-400'
-						type='submit'
-					>
-						{loading ? <Loader /> : 'Register'}
-					</button>
-					<div className='flex justify-between text-sm border-white max-sm:w-4/5 sm:w-2/4'>
-						<p className='text-black cursor-pointer hover:underline decoration-black'>
-							<Link to='/login'>Login</Link>
-						</p>
-						<p className='text-black cursor-pointer hover:underline decoration-black'>
-							Forgot Password
-						</p>
-					</div>
+					<Button loading={loading} text="Register" links={[{link:"/login", text:"Login"},{link:"/forgot-password", text:"Forgot Password"}]}/>
+					
 					{errorMessage && (
 						<h1 className='font-semibold text-center text-red-500 max-sm:px-3 sm:w-2/4 sm:text-sm'>
 							{errorMessage}
