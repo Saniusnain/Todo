@@ -2,25 +2,32 @@ import TodoComponent from './components/Todo/TodoComponent';
 import Login from './components/Authenticate/Login';
 import Signup from './components/Authenticate/Signup';
 import ResetPassword from './components/Authenticate/ResetPassword';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+	BrowserRouter,
+	Routes,
+	Route,
+	Outlet,
+	Navigate,
+} from 'react-router-dom';
 import NotFound from './components/UtilComponents/NotFound';
+
+const PrivateRoutes = () => {
+	const auth = localStorage.getItem('id');
+	return auth ? <Outlet /> : <Navigate to='/login' />;
+};
 
 function App() {
 	return (
-		<div className='bg-blue-800 '>
+		<div className='bg-blue-800 selection:bg-pink-400 selection:text-white'>
 			<BrowserRouter>
 				<Routes>
 					<Route path='/login' element={<Login />} />
 					<Route path='/signup' element={<Signup />} />
 					<Route path='/reset-password' element={<ResetPassword />} />
-					<Route path='/'
-						element={
-							//   <RequireAuth>
-							<TodoComponent />
-							//   </RequireAuth>
-						}
-					/>
-					<Route path="*" element={<NotFound/>}/>
+					<Route element={<PrivateRoutes />}>
+						<Route path='/' element={<TodoComponent />} />
+					</Route>
+					<Route path='*' element={<NotFound />} />
 				</Routes>
 			</BrowserRouter>
 		</div>
@@ -60,9 +67,7 @@ function App() {
 //   return isLoggedIn ? children : <Navigate to="/" replace />;
 // }
 
-
 // ---------------------------------------------------------------------------------------------------
-
 
 // import React, { createContext, useState, useEffect } from 'react';
 
