@@ -1,7 +1,7 @@
 import TodoComponent from './components/Todo/TodoComponent';
 import Login from './components/Authenticate/Login';
 import Signup from './components/Authenticate/Signup';
-import ForgotPassword from './components/Authenticate/ForgetPassword';
+import ResetPassword from './components/Authenticate/ResetPassword';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
 				<Routes>
 					<Route path='/login' element={<Login />} />
 					<Route path='/signup' element={<Signup />} />
-					<Route path='/forgot-password' element={<ForgotPassword />} />
+					<Route path='/reset-password' element={<ResetPassword />} />
 					<Route path='/'
 						element={
 							//   <RequireAuth>

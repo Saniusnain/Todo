@@ -186,7 +186,7 @@ const Signup = () => {
 						text='Register'
 						links={[
 							{ link: '/login', text: 'Login' },
-							{ link: '/forgot-password', text: 'Forgot Password' },
+							{ link: '/reset-password', text: 'Reset Password' },
 						]}
 					/>
 

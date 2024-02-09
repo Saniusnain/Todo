@@ -3,11 +3,18 @@ import Button from '../UtilComponents/Button';
 import LogoHeader from '../UtilComponents/LogoHeader';
 import axios, { AxiosResponse } from 'axios';
 import { maxLength } from '../../utils/utilFunctions';
-import { EMAIL_ERROR } from '../../utils/ErrorMessages';
+import {
+	EMAIL_ERROR,
+	PASSWORD_ERROR,
+	PASSWORD_MISMATCH,
+} from '../../utils/ErrorMessages';
 import { toast, ToastContainer } from 'react-toastify';
 
-const ForgetPassword = () => {
+const ResetPassword = () => {
 	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
+	const [showPassword, setShowPassword] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [loading, setLoading] = useState(false);
 
@@ -25,19 +32,30 @@ const ForgetPassword = () => {
 			return false;
 		}
 
+		if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,40}$/.test(password)) {
+			setErrorMessage(PASSWORD_ERROR);
+			return;
+		}
+
+		if (password !== confirmPassword) {
+			setErrorMessage(PASSWORD_MISMATCH);
+			return;
+		}
+
 		const body = {
 			email: email,
+			password: password,
 		};
 
 		try {
 			setLoading(true);
-			const result: AxiosResponse = await axios.post(
-				'http://localhost:5000/user/forget-password',
+			const result: AxiosResponse = await axios.put(
+				'http://localhost:5000/user/reset-password',
 				body
 			);
 			if (result && result.status === 200) {
 				setLoading(false);
-				toast('📨 Check Email!', {
+				toast('🎉 Reset Successfully!', {
 					position: 'top-right',
 					autoClose: 2000,
 					hideProgressBar: false,
@@ -69,7 +87,7 @@ const ForgetPassword = () => {
 					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-5 sm:pb-10 bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
 				>
 					<h1 className='flex items-center justify-center mb-5 font-bold text-center text-blue-800 sm:text-2xl max-sm:flex-col sm:flex-row'>
-						Forgot Password
+						Reset Password
 					</h1>
 					<input
 						type='email'
@@ -81,6 +99,60 @@ const ForgetPassword = () => {
 						className='px-2 py-3 mb-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
 						required
 					/>
+
+					<input
+						type={showPassword ? 'text' : 'password'}
+						placeholder='New Password'
+						value={password}
+						onChange={(e: ChangeEvent<HTMLInputElement>) =>
+							setPassword(maxLength(e.target.value))
+						}
+						className='px-2 py-3 mb-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
+						required
+					/>
+
+					<input
+						type={showPassword ? 'text' : 'password'}
+						placeholder='Confirm Password'
+						value={confirmPassword}
+						onChange={(e: ChangeEvent<HTMLInputElement>) =>
+							setConfirmPassword(maxLength(e.target.value))
+						}
+						className='px-2 py-3 mb-3 bg-transparent rounded outline-none max-sm:w-4/5 sm:w-2/4 ring-2 ring-blue-800 focus:outline-4 focus:outline-blue-300'
+						required
+					/>
+
+					<div className='flex items-center w-2/4 mb-3 max-sm:w-4/5'>
+						<input
+							id='default-checkbox'
+							type='checkbox'
+							value=''
+							className='text-blue-600 bg-gray-100 border-gray-300 rounded '
+							onChange={() => setShowPassword(!showPassword)}
+						/>
+						<label
+							htmlFor='default-checkbox'
+							className='text-sm font-medium text-black ms-2 '
+						>
+							Show Password
+						</label>
+					</div>
+
+					<div className='mb-3 max-sm:px-3 sm:w-2/4'>
+						<ul className='list-disc list-inside '>
+							{[
+								'At least 6 characters',
+								'1 uppercase and 1 lowercase letter',
+								'1 digit',
+							].map((rule) => {
+								return (
+									<li key={rule} className='text-sm'>
+										{rule}
+									</li>
+								);
+							})}
+						</ul>
+					</div>
 
 					<Button
 						loading={loading}
@@ -102,4 +174,4 @@ const ForgetPassword = () => {
 	);
 };
 
-export default ForgetPassword;
+export default ResetPassword;

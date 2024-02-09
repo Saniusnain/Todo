@@ -108,7 +108,7 @@ const Login = () => {
 						text='Login'
 						links={[
 							{ link: '/signup', text: 'SignUp' },
-							{ link: '/forgot-password', text: 'Forgot Password' },
+							{ link: '/reset-password', text: 'Reset Password' },
 						]}
 					/>
 					{errorMessage && (
