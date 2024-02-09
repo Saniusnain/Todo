@@ -3,7 +3,7 @@ import Button from '../UtilComponents/Button';
 import { useNavigate } from 'react-router-dom';
 import LogoHeader from '../UtilComponents/LogoHeader';
 import axios, { AxiosResponse } from 'axios';
-import { maxLength } from '../../utils/utilFunctions';
+import { maxLength, getUserId } from '../../utils/utilFunctions';
 import {
 	PASSWORD_ERROR,
 	NAME_ERROR,
@@ -13,6 +13,15 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 
 const Signup = () => {
+	const navigate = useNavigate();
+	
+	useEffect(() => {
+		const userId = getUserId();
+		if (userId) {
+			navigate('/')
+		}
+	},[navigate]);
+	
 	const [email, setEmail] = useState('');
 	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');

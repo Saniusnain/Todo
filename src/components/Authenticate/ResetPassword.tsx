@@ -1,8 +1,9 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../UtilComponents/Button';
 import LogoHeader from '../UtilComponents/LogoHeader';
 import axios, { AxiosResponse } from 'axios';
-import { maxLength } from '../../utils/utilFunctions';
+import { maxLength,getUserId } from '../../utils/utilFunctions';
 import {
 	EMAIL_ERROR,
 	PASSWORD_ERROR,
@@ -11,6 +12,15 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 
 const ResetPassword = () => {
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const userId = getUserId();
+		if (userId) {
+			navigate('/')
+		}
+	},[navigate]);
+
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');

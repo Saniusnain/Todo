@@ -1,13 +1,25 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../UtilComponents/Button';
 import LogoHeader from '../UtilComponents/LogoHeader';
 import axios, { AxiosResponse } from 'axios';
-import { maxLength, setUserId } from '../../utils/utilFunctions';
+import {
+	maxLength,
+	setUserGender,
+	setUserId,
+	getUserId,
+} from '../../utils/utilFunctions';
 import { EMAIL_ERROR } from '../../utils/ErrorMessages';
 
 const Login = () => {
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		const userId = getUserId();
+		if (userId) {
+			navigate('/');
+		}
+	}, [navigate]);
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -44,8 +56,11 @@ const Login = () => {
 			);
 			if (result && result.status === 200) {
 				setLoading(false);
-				setUserId(result.data.data.user_id);
+
+				setUserId(result.data.data._id);
+				setUserGender(result.data.data.gender);
 				resetStates();
+				navigate('/');
 			}
 		} catch (error) {
 			setLoading(false);
