@@ -56,9 +56,8 @@ const Login = () => {
 			);
 			if (result && result.status === 200) {
 				setLoading(false);
-
-				setUserId(result.data.data._id);
-				setUserGender(result.data.data.gender);
+				setUserId(result.data.data.user._id);
+				setUserGender(result.data.data.user.gender);
 				resetStates();
 				navigate('/');
 			}

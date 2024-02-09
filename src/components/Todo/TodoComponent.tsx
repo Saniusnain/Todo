@@ -21,7 +21,7 @@ const TodoComponent = () => {
 			<div className='flex items-center justify-between h-20 px-4 shadow max-sm:px-2 shadow-gray-100'>
 				<TiWavesOutline className='text-6xl text-white max-sm:text-5xl' />
 				<img
-					src={MaleAvatars[0]}
+					src={MaleAvatars[Math.floor(Math.random() * 3)]}
 					alt='avatar'
 					className='bg-white rounded-full max-sm:w-10 max-sm:h-10 sm:w-12 sm:h-12'
 				/>
