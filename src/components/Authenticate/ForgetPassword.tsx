@@ -66,8 +66,11 @@ const ForgetPassword = () => {
 			<div>
 				<form
 					onSubmit={handleSubmit}
-					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-12 sm:pb-10   bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
+					className='flex flex-col items-center justify-center max-sm:py-8 sm:pt-5 sm:pb-10 bg-white rounded shadow-2xl max-sm:w-72 sm:w-[36em] ring-2 ring-offset-4'
 				>
+					<h1 className='flex items-center justify-center mb-5 font-bold text-center text-blue-800 sm:text-2xl max-sm:flex-col sm:flex-row'>
+						Forgot Password
+					</h1>
 					<input
 						type='email'
 						placeholder='Email'
