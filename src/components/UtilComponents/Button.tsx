@@ -16,10 +16,10 @@ const Button = ({loading, text, links}:ButtonProps) => {
 				{loading ? <Loader /> : text}
 			</button>
 			<div className='flex justify-between mt-2 text-sm border-white max-sm:w-4/5 sm:w-2/4'>
-				<p className='text-black cursor-pointer hover:underline decoration-black'>
+				<p className='text-black underline cursor-pointer hover:no-underline decoration-black'>
 					<Link to={links[0].link}>{links[0].text}</Link>
 				</p>
-				<p className='text-black cursor-pointer hover:underline decoration-black'>
+				<p className='text-black underline cursor-pointer hover:no-underline decoration-black'>
                 <Link to={links[1].link}>{links[1].text}</Link>
 				</p>
 			</div>
