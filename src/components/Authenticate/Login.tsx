@@ -2,9 +2,8 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { TiWavesOutline } from 'react-icons/ti';
 import Button from '../UtilComponents/Button';
 import axios, { AxiosResponse } from 'axios';
-import { maxLength } from '../../utils/utilFunctions';
-import { PASSWORD_ERROR, EMAIL_ERROR } from '../../utils/ErrorMessages';
-import { toast, ToastContainer } from 'react-toastify';
+import { maxLength, setUserId } from '../../utils/utilFunctions';
+import { EMAIL_ERROR } from '../../utils/ErrorMessages';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -30,11 +29,6 @@ const Login = () => {
 			return false;
 		}
 
-		if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,40}$/.test(password)) {
-			setErrorMessage(PASSWORD_ERROR);
-			return;
-		}
-
 		const body = {
 			email: email,
 			password: password,
@@ -44,25 +38,16 @@ const Login = () => {
 		try {
 			setLoading(true);
 			const result: AxiosResponse = await axios.post(
-				'http://localhost:5000/user/register',
+				'http://localhost:5000/user/login',
 				body
 			);
-			if (result && result.status === 201) {
+			if (result && result.status === 200) {
 				setLoading(false);
-				toast('🦄 Registered Succesfully!', {
-					position: 'top-right',
-					autoClose: 2000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					draggable: true,
-					theme: 'light',
-				});
+				setUserId(result.data.data.user_id);
 				resetStates();
 			}
-			console.log(result);
 		} catch (error) {
 			setLoading(false);
-
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
 				setErrorMessage(error.response?.data.error);
@@ -126,20 +111,19 @@ const Login = () => {
 
 					<Button
 						loading={loading}
-						text='Register'
+						text='Login'
 						links={[
 							{ link: '/signup', text: 'SignUp' },
 							{ link: '/forgot-password', text: 'Forgot Password' },
 						]}
 					/>
 					{errorMessage && (
-						<h1 className='font-semibold text-center text-red-500 max-sm:px-3 sm:w-2/4 sm:text-sm'>
+						<h1 className='mt-3 font-semibold text-center text-red-500 max-sm:px-3 sm:w-2/4 sm:text-sm'>
 							{errorMessage}
 						</h1>
 					)}
 				</form>
 			</div>
-			<ToastContainer />
 		</div>
 	);
 };

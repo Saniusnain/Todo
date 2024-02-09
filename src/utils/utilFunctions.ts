@@ -6,3 +6,7 @@ export const maxLength = (value: string) => {
 	}
 	return value ? value.slice(0, MAX_LENGTH) : '';
 };
+
+export const setUserId = (id:string) => {
+	localStorage.setItem('id', id);
+}

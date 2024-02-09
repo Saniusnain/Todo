@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { TiWavesOutline } from 'react-icons/ti';
- import Button from '../UtilComponents/Button';
+import Button from '../UtilComponents/Button';
 import axios, { AxiosResponse } from 'axios';
 import { maxLength } from '../../utils/utilFunctions';
 import {
@@ -77,10 +77,8 @@ const Signup = () => {
 				});
 				resetStates();
 			}
-			console.log(result);
 		} catch (error) {
 			setLoading(false);
-
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
 				setErrorMessage(error.response?.data.error);
@@ -189,8 +187,15 @@ const Signup = () => {
 						</ul>
 					</div>
 
-					<Button loading={loading} text="Register" links={[{link:"/login", text:"Login"},{link:"/forgot-password", text:"Forgot Password"}]}/>
-					
+					<Button
+						loading={loading}
+						text='Register'
+						links={[
+							{ link: '/login', text: 'Login' },
+							{ link: '/forgot-password', text: 'Forgot Password' },
+						]}
+					/>
+
 					{errorMessage && (
 						<h1 className='font-semibold text-center text-red-500 max-sm:px-3 sm:w-2/4 sm:text-sm'>
 							{errorMessage}
