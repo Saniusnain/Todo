@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../UtilComponents/Button';
 import LogoHeader from '../UtilComponents/LogoHeader';
 import axios, { AxiosResponse } from 'axios';
@@ -6,8 +7,9 @@ import { maxLength, setUserId } from '../../utils/utilFunctions';
 import { EMAIL_ERROR } from '../../utils/ErrorMessages';
 
 const Login = () => {
-	const [email, setEmail] = useState('');
+	const navigate = useNavigate();
 
+	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');

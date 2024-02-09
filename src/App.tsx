@@ -3,6 +3,7 @@ import Login from './components/Authenticate/Login';
 import Signup from './components/Authenticate/Signup';
 import ResetPassword from './components/Authenticate/ResetPassword';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NotFound from './components/UtilComponents/NotFound';
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 							//   </RequireAuth>
 						}
 					/>
+					<Route path="*" element={<NotFound/>}/>
 				</Routes>
 			</BrowserRouter>
 		</div>
