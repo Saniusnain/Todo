@@ -6,10 +6,6 @@ const ResetPassword = lazy(
 	() => import('./components/Authenticate/ResetPassword')
 );
 import LoadingScreen from './components/UtilComponents/LoadingScreen';
-// import TodoComponent from "./components/Todo/TodoComponent";
-// import Login from './components/Authenticate/Login';
-// import Signup from './components/Authenticate/Signup';
-// import ResetPassword from './components/Authenticate/ResetPassword';
 
 import {
 	BrowserRouter,
