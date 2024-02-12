@@ -2,11 +2,23 @@ interface TTypePill {
 	type: string;
 	color: string;
 	hoverColor: string;
+	todoType: string;
+	changeType: () => void;
 }
-const TypePill = ({ type, color, hoverColor }: TTypePill) => {
+const TypePill = ({
+	type,
+	color,
+	hoverColor,
+
+	todoType,
+	changeType,
+}: TTypePill) => {
 	return (
 		<div
-			className={`${color} ml-2 max-sm:mt-2 cursor-pointer hover:${hoverColor} rounded-3xl px-3 py-1 text-white font-semibold max-sm:text-xs max-sm:w-16 sm:text-sm max-sm: sm:w-20 text-center max-sm:h-6 sm:h-7`}
+			onClick={() => changeType()}
+			className={`${type.toLowerCase() === todoType ? hoverColor : color} ${
+				type.toLowerCase() === todoType ? 'border-2 border-yellow-300' : null
+			} ml-2 max-sm:mt-2 cursor-pointer hover:${hoverColor}  rounded-3xl px-3 py-1 text-white font-semibold max-sm:text-xs sm:text-sm  text-center`}
 		>
 			{type}
 		</div>

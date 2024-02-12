@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import TypePill from './TypePill';
+
 const TodoInput = () => {
+	const [todoType, setTodoType] = useState('present');
+  
 	return (
 		<div className='flex flex-col sm:px-20 mt-5'>
 			<div className='flex justify-between items-end max-sm:w-full w-11/12   max-sm:px-10 md:px-20  lg:px-32  xl:px-48'>
@@ -24,11 +28,15 @@ const TodoInput = () => {
 						type='Present'
 						color='bg-cyan-500'
 						hoverColor='bg-cyan-600'
+						todoType={todoType}
+						changeType={() => setTodoType('present')}
 					/>
 					<TypePill
 						type='Future'
 						color='bg-fuchsia-500'
 						hoverColor='bg-fuchsia-600'
+						todoType={todoType}
+						changeType={() => setTodoType('future')}
 					/>
 				</div>
 			</div>
