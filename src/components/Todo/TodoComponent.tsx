@@ -23,7 +23,6 @@ const TodoComponent = () => {
 	return (
 		<div className='w-screen h-screen'>
 			<HeaderComponent />
-
 			<TodoInput />
 			<TodoItems />
 		</div>
