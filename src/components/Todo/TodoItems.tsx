@@ -5,7 +5,13 @@ const TodoItems = () => {
   return (
     <div className="flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80 ">
       <div className="flex justify-between mt-10 ">
-        <TodoFilter />
+        <TodoFilter
+          text="Present"
+          color=""
+          hoverColor=""
+          filter={filter}
+          changeFilter={() => setFilter("present")}
+        />
         <TodoFilter />
         <TodoFilter />
         <TodoFilter />
