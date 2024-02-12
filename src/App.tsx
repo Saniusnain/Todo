@@ -27,9 +27,9 @@ const PrivateRoutes = () => {
 
 function App() {
 	return (
-		<Suspense fallback={<LoadingScreen />}>
-			<div className='bg-blue-800 selection:bg-pink-400 selection:text-white'>
-				<BrowserRouter>
+		<div className='bg-blue-800 selection:bg-pink-400 selection:text-white'>
+			<BrowserRouter>
+				<Suspense fallback={<LoadingScreen />}>
 					<Routes>
 						<Route path='/login' element={<Login />} />
 						<Route path='/signup' element={<Signup />} />
@@ -39,9 +39,9 @@ function App() {
 						</Route>
 						<Route path='*' element={<NotFound />} />
 					</Routes>
-				</BrowserRouter>
-			</div>
-		</Suspense>
+				</Suspense>
+			</BrowserRouter>
+		</div>
 	);
 }
 
