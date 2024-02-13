@@ -2,41 +2,47 @@ import { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
 import { getToken } from '../../utils/utilFunctions';
 import TodoFilter from './TodoFilter';
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import LoadingTodo from '../UtilComponents/LoadingTodo';
 interface ITodoItem {
-    _id:string,
-    text:string, 
-    complete:boolean,
-    description:string,
-    type:string,
-    user_id:string,
-    __v:number,
+	_id: string;
+	text: string;
+	complete: boolean;
+	description: string;
+	type: string;
+	user_id: string;
+	__v: number;
 }
 
 const TodoItems = () => {
-    const token = getToken()
-    const [timeFilter, setTimeFilter] = useState('present');
-    const [statusFilter, setStatusFilter] = useState('active');
-    const [todos, setTodos] = useState<ITodoItem[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+	const token = getToken();
+	const [timeFilter, setTimeFilter] = useState('present');
+	const [statusFilter, setStatusFilter] = useState('active');
+	const [todos, setTodos] = useState<ITodoItem[]>([]);
+	const [loading, setLoading] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
 
-    const getTodos = async () => {
-        setLoading(true);
-        setErrorMessage('');
-        try {
-             const result:AxiosResponse = await axios.get(`http://localhost:5000/todo/${statusFilter === 'active' ? false : true}?type=${timeFilter}`, {
-                headers: {
-                    Authorization: token
-            }}); 
+	const getTodos = async () => {
+		setLoading(true);
+		setErrorMessage('');
+		try {
+			const result: AxiosResponse = await axios.get(
+				`http://localhost:5000/todo/${
+					statusFilter === 'active' ? false : true
+				}?type=${timeFilter}`,
+				{
+					headers: {
+						Authorization: token,
+					},
+				}
+			);
 
-            if (result && result.status === 200) {
-                setTodos([...result.data])
-                setLoading(false);
-            }
-            
-        } catch (error){
-            setLoading(false);
+			if (result && result.status === 200) {
+				setTodos([...result.data]);
+				setLoading(false);
+			}
+		} catch (error) {
+			setLoading(false);
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
 				setErrorMessage(error.response?.data.error);
@@ -44,12 +50,12 @@ const TodoItems = () => {
 				console.log('unexpected error: ', error);
 				setErrorMessage('An unexpected error occurred');
 			}
-        }
-    }
+		}
+	};
 
-    useEffect(() => {
-        getTodos();
-    },[statusFilter, timeFilter]);
+	useEffect(() => {
+		// getTodos();
+	}, [statusFilter, timeFilter]);
 
 	return (
 		<div className='flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80 '>
@@ -96,12 +102,14 @@ const TodoItems = () => {
 				/>
 			</div>
 			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-96'>
-                {
-                    todos.map((todo:ITodoItem) => {
-                        return <TodoItem key={todo._id} todo={todo}/>
-                    })
-                }
-            </div>
+				{loading ? (
+					<LoadingTodo />
+				) : (
+					todos.map((todo: ITodoItem) => {
+						return <TodoItem key={todo._id} todo={todo} />;
+					})
+				)}
+			</div>
 		</div>
 	);
 };
