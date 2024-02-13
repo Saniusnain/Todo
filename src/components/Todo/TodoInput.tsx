@@ -7,6 +7,7 @@ import {
 	TODO_DESCRIPTION_LENGTH_ERROR,
 } from '../../utils/ErrorMessages';
 import { getToken } from '../../utils/utilFunctions';
+import { toast, ToastContainer } from 'react-toastify';
 
 const TodoInput = () => {
 	const [todoType, setTodoType] = useState('present');
@@ -26,7 +27,7 @@ const TodoInput = () => {
 			setErrorMessage(TODO_LENGTH_ERROR);
 			return;
 		}
-		if (description.length < 5) {
+		if (description && description.length < 5) {
 			setErrorMessage(TODO_DESCRIPTION_LENGTH_ERROR);
 			return;
 		}
@@ -36,20 +37,31 @@ const TodoInput = () => {
 			description: description,
 			type: todoType,
 		};
+		const token = getToken();
 
 		try {
 			setLoading(true);
 			setErrorMessage('');
 
-			const result: AxiosResponse = await axios.post('http://localhost:5000/todo', {
-				Headers: {
-					Authorization: 'Bearer ' + getToken(),
-				},
-				body: JSON.stringify(body),
-			});
+			const result: AxiosResponse = await axios.post(
+				'http://localhost:5000/todo',
+				body,
+				{
+					headers: {
+						Authorization: token,
+					},
+				}
+			);
 
 			if (result && result.status === 201) {
-				console.log(result);
+				toast('🦄 Added Succesfully!', {
+					position: 'top-right',
+					autoClose: 2000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					draggable: true,
+					theme: 'light',
+				});
 				setLoading(false);
 				resetStates();
 			}
@@ -117,6 +129,7 @@ const TodoInput = () => {
 					/>
 				</div>
 			</div>
+			<ToastContainer />
 		</div>
 	);
 };
