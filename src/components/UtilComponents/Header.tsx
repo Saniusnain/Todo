@@ -27,7 +27,7 @@ const Header = () => {
 					loading='lazy'
 					src={
 						gender === 'male'
-							? MaleAvatars[Math.floor(Math.random() * 3)]
+							? MaleAvatars[Math.floor(Math.random() * 4)]
 							: FemaleAvatars[Math.floor(Math.random() * 3)]
 					}
 					alt='avatar'

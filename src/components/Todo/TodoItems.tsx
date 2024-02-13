@@ -91,7 +91,7 @@ const TodoItems = () => {
 					}}
 				/>
 			</div>
-			<div className='bg-slate-50 rounded px-1 w-full mt-4'>
+			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-32 '>
                 {
                     todos.map((todo:ITodoItem) => {
                         return <TodoItem todo={todo}/>
