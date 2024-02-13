@@ -8,6 +8,7 @@ import {
 	setUserGender,
 	setUserId,
 	getUserId,
+	setToken
 } from '../../utils/utilFunctions';
 import { EMAIL_ERROR } from '../../utils/ErrorMessages';
 
@@ -58,6 +59,7 @@ const Login = () => {
 				setLoading(false);
 				setUserId(result.data.data.user._id);
 				setUserGender(result.data.data.user.gender);
+				setToken(result.data.data.user.access_token);
 				resetStates();
 				navigate('/');
 			}
