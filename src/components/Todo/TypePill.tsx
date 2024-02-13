@@ -17,7 +17,7 @@ const TypePill = ({
 		<div
 			onClick={() => changeType()}
 			className={`${type.toLowerCase() === todoType ? hoverColor : color} ${
-				type.toLowerCase() === todoType ? 'border-2 border-yellow-300' : null
+				type.toLowerCase() === todoType ? 'outline outline-2 outline-yellow-300' : null
 			} ml-2 max-sm:mt-2 cursor-pointer hover:${hoverColor}  rounded-3xl px-3 py-1 text-white font-semibold max-sm:text-xs sm:text-sm  text-center`}
 		>
 			{type}
