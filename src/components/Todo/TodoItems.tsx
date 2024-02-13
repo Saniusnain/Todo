@@ -13,7 +13,7 @@ const TodoItems = () => {
     const token = getToken()
     const [timeFilter, setTimeFilter] = useState('present');
     const [statusFilter, setStatusFilter] = useState('active');
-    const [todos, setTodos] = useState([{text: 'Go Gym', description: 'Eat good and go to the gymnasium', type: 'present'}, {text: 'Go Gym', description: 'Eat good and go to the gymnasium', type: 'present'}]);
+    const [todos, setTodos] = useState([{text: 'Go Fly', description: 'Eat good and go to the gymnasium', type: 'present'}, {text: 'Go Gym', description: 'Eat good and go to the gymnasium', type: 'present'}]);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -91,7 +91,7 @@ const TodoItems = () => {
 					}}
 				/>
 			</div>
-			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-32 '>
+			<div className='bg-slate-50 rounded px-1 w-full mt-4  '>
                 {
                     todos.map((todo:ITodoItem) => {
                         return <TodoItem todo={todo}/>
