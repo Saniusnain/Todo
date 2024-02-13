@@ -4,16 +4,20 @@ import { getToken } from '../../utils/utilFunctions';
 import TodoFilter from './TodoFilter';
 import axios, {AxiosResponse} from 'axios';
 interface ITodoItem {
+    _id:string,
     text:string, 
+    complete:boolean,
     description:string,
-    type:string
+    type:string,
+    user_id:string,
+    __v:number,
 }
 
 const TodoItems = () => {
     const token = getToken()
     const [timeFilter, setTimeFilter] = useState('present');
     const [statusFilter, setStatusFilter] = useState('active');
-    const [todos, setTodos] = useState([{text: 'Go Fly', description: 'Eat good and go to the gymnasium', type: 'present'}, {text: 'Go Gym', description: 'Eat good and go to the gymnasium', type: 'present'}]);
+    const [todos, setTodos] = useState<ITodoItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -21,13 +25,13 @@ const TodoItems = () => {
         setLoading(true);
         setErrorMessage('');
         try {
-            const result:AxiosResponse = await axios.get('http://localhost:5000/todo', {
+             const result:AxiosResponse = await axios.get(`http://localhost:5000/todo/${statusFilter === 'active' ? false : true}?type=${timeFilter}`, {
                 headers: {
-                    Authorization: 'Bearer ' + token
-            }});
+                    Authorization: token
+            }}); 
 
             if (result && result.status === 200) {
-                console.log(result);
+                setTodos([...result.data])
                 setLoading(false);
             }
             
@@ -45,7 +49,7 @@ const TodoItems = () => {
 
     useEffect(() => {
         getTodos();
-    },[]);
+    },[statusFilter, timeFilter]);
 
 	return (
 		<div className='flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80 '>
@@ -91,10 +95,10 @@ const TodoItems = () => {
 					}}
 				/>
 			</div>
-			<div className='bg-slate-50 rounded px-1 w-full mt-4  '>
+			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-96'>
                 {
                     todos.map((todo:ITodoItem) => {
-                        return <TodoItem todo={todo}/>
+                        return <TodoItem key={todo._id} todo={todo}/>
                     })
                 }
             </div>
