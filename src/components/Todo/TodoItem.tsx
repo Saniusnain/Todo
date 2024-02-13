@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { IoIosArrowDown } from 'react-icons/io';
 
 interface ITodoItem {
 	todo: {
@@ -38,10 +38,7 @@ const TodoItem = ({ todo }: ITodoItem) => {
 						</span>
 					</p>
 					<p className='ml-5 max-sm:text-xs sm:text-sm text-slate-500 text-ellipsis max-sm:hidden'>
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta
-						nesciunt earum ex nostrum, qui et porro libero asperiores deserunt
-						molestiae tempore iste voluptates ea esse aliquid neque? Assumenda,
-						aliquam numquam!
+						{todo.description}
 					</p>
 					{showDescription && showDescription === todo.text && (
 						<p
@@ -51,10 +48,7 @@ const TodoItem = ({ todo }: ITodoItem) => {
 									: 'slide-close'
 							} ml-5 max-sm:text-xs sm:text-md text-slate-500 text-ellipsis sm:hidden`}
 						>
-							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta
-							nesciunt earum ex nostrum, qui et porro libero asperiores deserunt
-							molestiae tempore iste voluptates ea esse aliquid neque?
-							Assumenda, aliquam numquam!
+							{todo.description}
 						</p>
 					)}
 				</div>
