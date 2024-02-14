@@ -89,7 +89,9 @@ const TodoInput = () => {
 				// 	draggable: true,
 				// 	theme: 'light',
 				// });
-				setTodoContext([result.data.todo]);
+				const todo = result.data.todo;
+				todo["edit"] = false
+				setTodoContext([todo]);
 				setLoading(false);
 				resetStates();
 			}

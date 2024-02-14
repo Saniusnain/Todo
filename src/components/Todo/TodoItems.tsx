@@ -34,7 +34,8 @@ const TodoItems = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
-		if (todoContext.length > 0) {
+		if (todoContext.length > 0 && !todoContext[0].edit) {
+			console.log('cCONTEZT--- ', todoContext)
 			setTodos([...todoContext, ...todos]);
 			setTodoContext([]);
 		}
@@ -215,6 +216,7 @@ const TodoItems = () => {
 								handleComplete={handleComplete}
 								handleDelete={handleDelete}
 								processingLoading={processingLoading}
+								setTodoContext={setTodoContext}
 							/>
 						);
 					})

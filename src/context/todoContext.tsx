@@ -48,7 +48,7 @@ interface ITodoItem {
 	type: string;
 	user_id: string;
 	__v: number;
-	a?:string
+	edit?:boolean
 }
 
 interface TodoContextProps {
