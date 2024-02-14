@@ -17,12 +17,16 @@ interface ITodoItem {
 
 const TodoItems = () => {
 	const token = getToken();
-    const {todoContext, setTodoContext} = useTodoContext();
+	const { todoContext, setTodoContext } = useTodoContext();
 	const [timeFilter, setTimeFilter] = useState('present');
 	const [statusFilter, setStatusFilter] = useState('active');
 	const [todos, setTodos] = useState<ITodoItem[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
+	useEffect(() => {
+		getTodos();
+	}, [statusFilter, timeFilter]);
 
 	const getTodos = async () => {
 		setLoading(true);
@@ -55,9 +59,32 @@ const TodoItems = () => {
 		}
 	};
 
-	useEffect(() => {
-		getTodos();
-	}, [statusFilter, timeFilter]);
+	const handleComplete = async (id: string, status: boolean) => {
+		setErrorMessage('');
+		try {
+			const result: AxiosResponse = await axios.put(
+				`http://localhost:5000/todo/${id}/${status}`,
+				{},
+				{
+					headers: {
+						Authorization: token,
+					},
+				}
+			);
+
+			if (result && result.status === 200) {
+				setTodos(todos.filter((todo) => todo._id !== id));
+			}
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.log('error message: ', error.message);
+				setErrorMessage(error.response?.data.error);
+			} else {
+				console.log('unexpected error: ', error);
+				setErrorMessage('An unexpected error occurred');
+			}
+		}
+	};
 
 	return (
 		<div className='flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80 '>
@@ -108,16 +135,23 @@ const TodoItems = () => {
 					}}
 				/>
 			</div>
-            {
-                todoContext[0].text
-            }
+
 			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-96'>
 				{loading ? (
 					<LoadingTodo />
-				) : todos.length === 0 ? <LoadingTodo text="No todos... 🎉"/> :todos.map((todo: ITodoItem) => {
-                    return <TodoItem key={todo._id} todo={todo} />;
-                })
-                }
+				) : todos.length === 0 ? (
+					<LoadingTodo text='No todos... 🎉' />
+				) : (
+					todos.map((todo: ITodoItem) => {
+						return (
+							<TodoItem
+								key={todo._id}
+								todo={todo}
+								handleComplete={handleComplete}
+							/>
+						);
+					})
+				)}
 			</div>
 		</div>
 	);

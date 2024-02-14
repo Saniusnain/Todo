@@ -13,14 +13,20 @@ interface ITodoItem {
 		user_id: string;
 		__v: number;
 	};
+	handleComplete: (id: string, status: boolean) => void;
 }
 
-const TodoItem = ({ todo }: ITodoItem) => {
+const TodoItem = ({ todo, handleComplete }: ITodoItem) => {
 	const [showDescription, setShowDescription] = useState('');
 	return (
 		<div className='flex items-center justify-between my-1 py-2 max-sm:px-5 sm:px-5'>
 			<div className='flex items-center'>
-				<input type='checkbox' className='accent-pink-500' />
+				<input
+					type='checkbox'
+					className='accent-pink-500'
+					checked={todo.completed}
+					onChange={() => handleComplete(todo._id, !todo.completed)}
+				/>
 				<div className='flex flex-col'>
 					<p className='ml-5 flex items-center sm:text-lg font-semibold'>
 						{todo.text}
