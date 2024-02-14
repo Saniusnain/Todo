@@ -86,6 +86,32 @@ const TodoItems = () => {
 		}
 	};
 
+	const handleDelete = async (id: string) => {
+		setErrorMessage('');
+		try {
+			const result: AxiosResponse = await axios.delete(
+				`http://localhost:5000/todo/${id}`,
+				{
+					headers: {
+						Authorization: token,
+					},
+				}
+			);
+
+			if (result && result.status === 200) {
+				setTodos(todos.filter((todo) => todo._id !== id));
+			}
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.log('error message: ', error.message);
+				setErrorMessage(error.response?.data.error);
+			} else {
+				console.log('unexpected error: ', error);
+				setErrorMessage('An unexpected error occurred');
+			}
+		}
+	};
+
 	return (
 		<div className='flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80 '>
 			{errorMessage && (
@@ -148,6 +174,7 @@ const TodoItems = () => {
 								key={todo._id}
 								todo={todo}
 								handleComplete={handleComplete}
+                                handleDelete={handleDelete}
 							/>
 						);
 					})
