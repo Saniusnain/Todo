@@ -8,8 +8,10 @@ import {
 } from '../../utils/ErrorMessages';
 import { getToken } from '../../utils/utilFunctions';
 import { toast, ToastContainer } from 'react-toastify';
+import { useTodoContext } from '../../context/todoContext';
 
 const TodoInput = () => {
+	const { setTodoContext } = useTodoContext();
 	const [todoType, setTodoType] = useState('present');
 	const [loading, setLoading] = useState(false);
 	const [todo, setTodo] = useState('');

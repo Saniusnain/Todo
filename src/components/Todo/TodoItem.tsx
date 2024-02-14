@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
-
+import Loader from '../UtilComponents/Loader';
 interface ITodoItem {
 	todo: {
 		_id: string;
@@ -14,10 +14,16 @@ interface ITodoItem {
 		__v: number;
 	};
 	handleComplete: (id: string, status: boolean) => void;
-	handleDelete: (id:string) => void;
+	handleDelete: (id: string) => void;
+	deleteLoading: boolean;
 }
 
-const TodoItem = ({ todo, handleComplete, handleDelete }: ITodoItem) => {
+const TodoItem = ({
+	todo,
+	handleComplete,
+	handleDelete,
+	deleteLoading,
+}: ITodoItem) => {
 	const [showDescription, setShowDescription] = useState('');
 	return (
 		<div className='flex items-center justify-between my-1 py-2 max-sm:px-5 sm:px-5'>
@@ -64,9 +70,16 @@ const TodoItem = ({ todo, handleComplete, handleDelete }: ITodoItem) => {
 					)}
 				</div>
 			</div>
-			<div className='flex ml-3'>
+			<div className='flex items-center ml-3'>
 				<FiEdit2 className='mr-3 sm:text-xl cursor-pointer hover:text-green-400' />
-				<AiOutlineDelete className=' sm:text-xl cursor-pointer hover:text-red-500' onClick={() => handleDelete(todo._id)}/>
+				{deleteLoading ? (
+					<Loader />
+				) : (
+					<AiOutlineDelete
+						className={`sm:text-xl cursor-pointer hover:text-red-500`}
+						onClick={() => !deleteLoading && handleDelete(todo._id)}
+					/>
+				)}
 			</div>
 		</div>
 	);

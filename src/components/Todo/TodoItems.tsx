@@ -17,11 +17,12 @@ interface ITodoItem {
 
 const TodoItems = () => {
 	const token = getToken();
-	const { todoContext, setTodoContext } = useTodoContext();
+	const { todoContext } = useTodoContext();
 	const [timeFilter, setTimeFilter] = useState('present');
 	const [statusFilter, setStatusFilter] = useState('active');
 	const [todos, setTodos] = useState<ITodoItem[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
@@ -88,6 +89,7 @@ const TodoItems = () => {
 
 	const handleDelete = async (id: string) => {
 		setErrorMessage('');
+		setDeleteLoading(true);
 		try {
 			const result: AxiosResponse = await axios.delete(
 				`http://localhost:5000/todo/${id}`,
@@ -100,8 +102,10 @@ const TodoItems = () => {
 
 			if (result && result.status === 200) {
 				setTodos(todos.filter((todo) => todo._id !== id));
+				setDeleteLoading(false);
 			}
 		} catch (error) {
+			setDeleteLoading(false);
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
 				setErrorMessage(error.response?.data.error);
@@ -174,7 +178,8 @@ const TodoItems = () => {
 								key={todo._id}
 								todo={todo}
 								handleComplete={handleComplete}
-                                handleDelete={handleDelete}
+								handleDelete={handleDelete}
+                                deleteLoading={deleteLoading}
 							/>
 						);
 					})
