@@ -5,9 +5,9 @@ const LoadingTodo = ({text}:{text?:string}) => {
 			<div className='flex items-center'>
 				<div className='w-3 h-3 rounded bg-slate-400 animate-pulse '></div>
 				<div className='flex flex-col'>
-					<p className='ml-5 flex items-center sm:text-lg font-semibold'>
+					<div className='ml-5 flex items-center sm:text-lg font-semibold'>
 						{text ? <p className='text-slate-400 font-xs'>{text}</p>:<div className='h-1 w-48 bg-slate-400 animate-pulse'></div>}
-					</p>
+					</div>
 				</div>
 			</div>
 			<div className='flex ml-3'>
