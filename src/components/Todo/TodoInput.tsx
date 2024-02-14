@@ -81,14 +81,14 @@ const TodoInput = () => {
 			});
 
 			if (result && result.status === 201) {
-				toast('🦄 Added Succesfully!', {
-					position: 'top-right',
-					autoClose: 2000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					draggable: true,
-					theme: 'light',
-				});
+				// toast('🦄 Added Succesfully!', {
+				// 	position: 'top-right',
+				// 	autoClose: 2000,
+				// 	hideProgressBar: false,
+				// 	closeOnClick: true,
+				// 	draggable: true,
+				// 	theme: 'light',
+				// });
 				setTodoContext([result.data.todo]);
 				setLoading(false);
 				resetStates();
