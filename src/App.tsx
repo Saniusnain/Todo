@@ -6,6 +6,7 @@ const ResetPassword = lazy(
 	() => import('./components/Authenticate/ResetPassword')
 );
 import LoadingScreen from './components/UtilComponents/LoadingScreen';
+import { TodoProvider } from './context/todoContext';
 
 import {
 	BrowserRouter,
@@ -23,21 +24,23 @@ const PrivateRoutes = () => {
 
 function App() {
 	return (
-		<div className='bg-blue-800 selection:bg-pink-400 selection:text-white'>
-			<BrowserRouter>
-				<Suspense fallback={<LoadingScreen />}>
-					<Routes>
-						<Route path='/login' element={<Login />} />
-						<Route path='/signup' element={<Signup />} />
-						<Route path='/reset-password' element={<ResetPassword />} />
-						<Route element={<PrivateRoutes />}>
-							<Route path='/' element={<TodoComponent />} />
-						</Route>
-						<Route path='*' element={<NotFound />} />
-					</Routes>
-				</Suspense>
-			</BrowserRouter>
-		</div>
+		<TodoProvider>
+			<div className='bg-blue-800 selection:bg-pink-400 selection:text-white'>
+				<BrowserRouter>
+					<Suspense fallback={<LoadingScreen />}>
+						<Routes>
+							<Route path='/login' element={<Login />} />
+							<Route path='/signup' element={<Signup />} />
+							<Route path='/reset-password' element={<ResetPassword />} />
+							<Route element={<PrivateRoutes />}>
+								<Route path='/' element={<TodoComponent />} />
+							</Route>
+							<Route path='*' element={<NotFound />} />
+						</Routes>
+					</Suspense>
+				</BrowserRouter>
+			</div>
+		</TodoProvider>
 	);
 }
 

@@ -89,7 +89,7 @@ const TodoInput = () => {
 					type='text'
 					placeholder='Add todo..'
 					value={todo}
-					className='font-bold text-white  w-3/5 bg-transparent  max-sm:text-lg sm:text-4xl border-t-0 border-b-4 border-l-0 border-r-0 outline-none px-2 py-1'
+					className='font-bold text-white  w-3/5 bg-transparent  max-sm:text-lg sm:text-3xl border-t-0 border-b-4 border-l-0 border-r-0 outline-none px-2 py-1'
 					onChange={(e: ChangeEvent<HTMLInputElement>) =>
 						setTodo(e.target.value)
 					}

@@ -5,9 +5,13 @@ import { IoIosArrowDown } from 'react-icons/io';
 
 interface ITodoItem {
 	todo: {
+		_id: string;
 		text: string;
+		completed: boolean;
 		description: string;
 		type: string;
+		user_id: string;
+		__v: number;
 	};
 }
 

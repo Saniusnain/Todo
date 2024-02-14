@@ -4,10 +4,11 @@ import { getToken } from '../../utils/utilFunctions';
 import TodoFilter from './TodoFilter';
 import axios, { AxiosResponse } from 'axios';
 import LoadingTodo from '../UtilComponents/LoadingTodo';
+import { useTodoContext } from '../../context/todoContext';
 interface ITodoItem {
 	_id: string;
 	text: string;
-	complete: boolean;
+	completed: boolean;
 	description: string;
 	type: string;
 	user_id: string;
@@ -16,6 +17,7 @@ interface ITodoItem {
 
 const TodoItems = () => {
 	const token = getToken();
+    const {todoContext, setTodoContext} = useTodoContext();
 	const [timeFilter, setTimeFilter] = useState('present');
 	const [statusFilter, setStatusFilter] = useState('active');
 	const [todos, setTodos] = useState<ITodoItem[]>([]);
@@ -106,6 +108,9 @@ const TodoItems = () => {
 					}}
 				/>
 			</div>
+            {
+                todoContext[0].text
+            }
 			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-96'>
 				{loading ? (
 					<LoadingTodo />
