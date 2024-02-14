@@ -24,7 +24,7 @@ const TodoItems = () => {
 	const [statusFilter, setStatusFilter] = useState('active');
 	const [todos, setTodos] = useState<ITodoItem[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [deleteLoading, setDeleteLoading] = useState(false);
+	const [processingLoading, setProcessingLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
@@ -73,6 +73,7 @@ const TodoItems = () => {
 
 	const handleComplete = async (id: string, status: boolean) => {
 		setErrorMessage('');
+        setProcessingLoading(true);
 		try {
 			const result: AxiosResponse = await axios.put(
 				`http://localhost:5000/todo/${id}/${status}`,
@@ -86,8 +87,10 @@ const TodoItems = () => {
 
 			if (result && result.status === 200) {
 				setTodos(todos.filter((todo) => todo._id !== id));
+                setProcessingLoading(false);
 			}
 		} catch (error) {
+            setProcessingLoading(false);
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
 				setErrorMessage(error.response?.data.error);
@@ -100,7 +103,7 @@ const TodoItems = () => {
 
 	const handleDelete = async (id: string) => {
 		setErrorMessage('');
-		setDeleteLoading(true);
+		setProcessingLoading(true);
 		try {
 			const result: AxiosResponse = await axios.delete(
 				`http://localhost:5000/todo/${id}`,
@@ -113,10 +116,10 @@ const TodoItems = () => {
 
 			if (result && result.status === 200) {
 				setTodos(todos.filter((todo) => todo._id !== id));
-				setDeleteLoading(false);
+				setProcessingLoading(false);
 			}
 		} catch (error) {
-			setDeleteLoading(false);
+			setProcessingLoading(false);
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
 				setErrorMessage(error.response?.data.error);
@@ -192,7 +195,7 @@ const TodoItems = () => {
 								todo={todo}
 								handleComplete={handleComplete}
 								handleDelete={handleDelete}
-								deleteLoading={deleteLoading}
+								processingLoading={processingLoading}
 							/>
 						);
 					})

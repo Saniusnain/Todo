@@ -15,14 +15,14 @@ interface ITodoItem {
 	};
 	handleComplete: (id: string, status: boolean) => void;
 	handleDelete: (id: string) => void;
-	deleteLoading: boolean;
+	processingLoading: boolean;
 }
 
 const TodoItem = ({
 	todo,
 	handleComplete,
 	handleDelete,
-	deleteLoading,
+	processingLoading,
 }: ITodoItem) => {
 	const [showDescription, setShowDescription] = useState('');
 	const [selectedItemId, setSelectedItemId] = useState('');
@@ -30,15 +30,19 @@ const TodoItem = ({
 	return (
 		<div className='flex items-center justify-between my-1 py-2 max-sm:px-5 sm:px-5'>
 			<div className='flex items-center'>
-				<input
-					type='checkbox'
-					className='accent-pink-500'
-					checked={todo.completed}
-					onChange={() => {
-						handleComplete(todo._id, !todo.completed);
-						setSelectedItemId(todo._id);
-					}}
-				/>
+				{processingLoading && todo._id === selectedItemId ? (
+					<Loader />
+				) : (
+					<input
+						type='checkbox'
+						className='accent-pink-500'
+						checked={todo.completed}
+						onChange={() => {
+							handleComplete(todo._id, !todo.completed);
+							setSelectedItemId(todo._id);
+						}}
+					/>
+				)}
 				<div className='flex flex-col'>
 					<p className='ml-5 flex items-center sm:text-lg font-semibold'>
 						{todo.text}
@@ -77,17 +81,13 @@ const TodoItem = ({
 			</div>
 			<div className='flex items-center ml-3'>
 				<FiEdit2 className='mr-3 sm:text-xl cursor-pointer hover:text-green-400' />
-				{deleteLoading && todo._id === selectedItemId ? (
-					<Loader />
-				) : (
-					<AiOutlineDelete
-						className={`sm:text-xl cursor-pointer hover:text-red-500`}
-						onClick={() => {
-							!deleteLoading && handleDelete(todo._id);
-							setSelectedItemId(todo._id);
-						}}
-					/>
-				)}
+				<AiOutlineDelete
+					className={`sm:text-xl cursor-pointer hover:text-red-500`}
+					onClick={() => {
+						!processingLoading && handleDelete(todo._id);
+						setSelectedItemId(todo._id);
+					}}
+				/>
 			</div>
 		</div>
 	);
