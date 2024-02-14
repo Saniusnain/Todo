@@ -7,7 +7,7 @@ import {
 	TODO_LENGTH_ERROR,
 	TODO_DESCRIPTION_LENGTH_ERROR,
 } from '../../utils/ErrorMessages';
-import { getToken, clearStorage } from '../../utils/utilFunctions';
+import { getToken, clearStorage, maxLength } from '../../utils/utilFunctions';
 import { toast, ToastContainer } from 'react-toastify';
 import { useTodoContext, useTodoTypeContext } from '../../context/todoContext';
 import api from '../../api/api';
@@ -121,7 +121,7 @@ const TodoInput = () => {
 					value={todo}
 					className='font-bold text-white  w-3/5 bg-transparent  max-sm:text-lg sm:text-3xl border-t-0 border-b-4 border-l-0 border-r-0 outline-none px-2 py-1'
 					onChange={(e: ChangeEvent<HTMLInputElement>) =>
-						setTodo(e.target.value)
+						setTodo(maxLength(e.target.value))
 					}
 				/>
 
@@ -163,8 +163,4 @@ const TodoInput = () => {
 		</div>
 	);
 };
-
-{
-	/* <TypePill type="Present" color='bg-cyan-500'/> */
-}
 export default TodoInput;

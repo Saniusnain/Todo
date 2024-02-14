@@ -7,20 +7,6 @@ import {
 	SetStateAction,
 } from 'react';
 
-interface ITodoItem {
-	_id: string;
-	text: string;
-	completed: boolean;
-	description: string;
-	type: string;
-	user_id: string;
-	__v: number;
-}
-
-interface TodoContextProps {
-	todoContext: ITodoItem[];
-	setTodoContext: Dispatch<SetStateAction<ITodoItem[]>>;
-}
 
 interface TodoTypeContextProps {
 	typeContext: string;
@@ -29,17 +15,17 @@ interface TodoTypeContextProps {
 
 const TodoTypeContext = createContext<TodoTypeContextProps | undefined>(
 	undefined
-);
-export const TodoTypeProvider = ({ children }: { children: ReactNode }) => {
-	const [typeContext, setTypeContext] = useState('');
+	);
+	export const TodoTypeProvider = ({ children }: { children: ReactNode }) => {
+		const [typeContext, setTypeContext] = useState('');
 
-	const contextValue: TodoTypeContextProps = {
-		typeContext,
-		setTypeContext,
-	};
-
-	return (
-		<TodoTypeContext.Provider value={contextValue}>
+		const contextValue: TodoTypeContextProps = {
+			typeContext,
+			setTypeContext,
+		};
+		
+		return (
+			<TodoTypeContext.Provider value={contextValue}>
 			{children}
 		</TodoTypeContext.Provider>
 	);
@@ -47,13 +33,28 @@ export const TodoTypeProvider = ({ children }: { children: ReactNode }) => {
 
 export const useTodoTypeContext = () => {
 	const context = useContext(TodoTypeContext);
-
+	
 	if (!context) {
 		throw new Error('Context must be used within a Provider');
 	}
-
+	
 	return context;
 };
+interface ITodoItem {
+	_id: string;
+	text: string;
+	completed: boolean;
+	description: string;
+	type: string;
+	user_id: string;
+	__v: number;
+	a?:string
+}
+
+interface TodoContextProps {
+	todoContext: ITodoItem[];
+	setTodoContext: Dispatch<SetStateAction<ITodoItem[]>>;
+}
 
 const TodoContext = createContext<TodoContextProps | undefined>(undefined);
 
