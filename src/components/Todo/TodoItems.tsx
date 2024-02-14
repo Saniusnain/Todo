@@ -4,7 +4,8 @@ import { getToken } from '../../utils/utilFunctions';
 import TodoFilter from './TodoFilter';
 import axios, { AxiosResponse } from 'axios';
 import LoadingTodo from '../UtilComponents/LoadingTodo';
-import { useTodoContext } from '../../context/todoContext';
+import { useTodoContext, useTodoTypeContext } from '../../context/todoContext';
+
 interface ITodoItem {
 	_id: string;
 	text: string;
@@ -17,13 +18,23 @@ interface ITodoItem {
 
 const TodoItems = () => {
 	const token = getToken();
-	const { todoContext } = useTodoContext();
+    const {setTypeContext} = useTodoTypeContext()
+	const { setTodoContext, todoContext } = useTodoContext();
 	const [timeFilter, setTimeFilter] = useState('present');
 	const [statusFilter, setStatusFilter] = useState('active');
 	const [todos, setTodos] = useState<ITodoItem[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
+	useEffect(() => {
+		console.log('todoContext 00000  ', todoContext);
+		console.log('todoContext 00000  ', todoContext.length);
+		if (todoContext.length > 0) {
+			setTodos([...todoContext, ...todos]);
+			setTodoContext([]);
+		}
+	}, [todoContext]);
 
 	useEffect(() => {
 		getTodos();
@@ -132,6 +143,7 @@ const TodoItems = () => {
 					changeFilter={() => {
 						setTimeFilter('present');
 						setStatusFilter('active');
+                        setTypeContext('present');
 					}}
 				/>
 				<TodoFilter
@@ -142,6 +154,7 @@ const TodoItems = () => {
 					changeFilter={() => {
 						setTimeFilter('future');
 						setStatusFilter('active');
+                        setTypeContext('future');
 					}}
 				/>
 				<TodoFilter
@@ -179,7 +192,7 @@ const TodoItems = () => {
 								todo={todo}
 								handleComplete={handleComplete}
 								handleDelete={handleDelete}
-                                deleteLoading={deleteLoading}
+								deleteLoading={deleteLoading}
 							/>
 						);
 					})

@@ -1,4 +1,4 @@
-import React, {
+import {
 	createContext,
 	useState,
 	useContext,
@@ -21,6 +21,39 @@ interface TodoContextProps {
 	todoContext: ITodoItem[];
 	setTodoContext: Dispatch<SetStateAction<ITodoItem[]>>;
 }
+
+interface TodoTypeContextProps {
+	typeContext: string;
+	setTypeContext: Dispatch<SetStateAction<string>>;
+}
+
+const TodoTypeContext = createContext<TodoTypeContextProps | undefined>(
+	undefined
+);
+export const TodoTypeProvider = ({ children }: { children: ReactNode }) => {
+	const [typeContext, setTypeContext] = useState('');
+
+	const contextValue: TodoTypeContextProps = {
+		typeContext,
+		setTypeContext,
+	};
+
+	return (
+		<TodoTypeContext.Provider value={contextValue}>
+			{children}
+		</TodoTypeContext.Provider>
+	);
+};
+
+export const useTodoTypeContext = () => {
+	const context = useContext(TodoTypeContext);
+
+	if (!context) {
+		throw new Error('Context must be used within a Provider');
+	}
+
+	return context;
+};
 
 const TodoContext = createContext<TodoContextProps | undefined>(undefined);
 

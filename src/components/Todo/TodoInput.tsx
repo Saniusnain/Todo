@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import TypePill from './TypePill';
 import Loader from '../UtilComponents/Loader';
@@ -8,15 +8,24 @@ import {
 } from '../../utils/ErrorMessages';
 import { getToken } from '../../utils/utilFunctions';
 import { toast, ToastContainer } from 'react-toastify';
-import { useTodoContext } from '../../context/todoContext';
+import { useTodoContext, useTodoTypeContext } from '../../context/todoContext';
 
 const TodoInput = () => {
 	const { setTodoContext } = useTodoContext();
+	const { setTypeContext, typeContext } = useTodoTypeContext();
+
 	const [todoType, setTodoType] = useState('present');
 	const [loading, setLoading] = useState(false);
 	const [todo, setTodo] = useState('');
 	const [description, setDescription] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+
+	useEffect(() => {
+		if (typeContext !== '') {
+			setTodoType(typeContext);
+			setTypeContext('');
+		}
+	}, [typeContext]);
 
 	const resetStates = () => {
 		setLoading(false);
@@ -64,6 +73,7 @@ const TodoInput = () => {
 					draggable: true,
 					theme: 'light',
 				});
+				setTodoContext([result.data.todo]);
 				setLoading(false);
 				resetStates();
 			}
