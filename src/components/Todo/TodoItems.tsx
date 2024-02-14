@@ -54,11 +54,16 @@ const TodoItems = () => {
 	};
 
 	useEffect(() => {
-		// getTodos();
+		getTodos();
 	}, [statusFilter, timeFilter]);
 
 	return (
 		<div className='flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80 '>
+			{errorMessage && (
+				<h1 className='bg-slate-50 text-red-600 rounded px-2 py-1 w-full text-center mt-2 mb-4 font-bold max-sm:text-sm'>
+					{errorMessage}
+				</h1>
+			)}
 			<div className='flex justify-between mt-10 '>
 				<TodoFilter
 					text='Present'
@@ -104,11 +109,10 @@ const TodoItems = () => {
 			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-96'>
 				{loading ? (
 					<LoadingTodo />
-				) : (
-					todos.map((todo: ITodoItem) => {
-						return <TodoItem key={todo._id} todo={todo} />;
-					})
-				)}
+				) : todos.length === 0 ? <LoadingTodo text="No todos... 🎉"/> :todos.map((todo: ITodoItem) => {
+                    return <TodoItem key={todo._id} todo={todo} />;
+                })
+                }
 			</div>
 		</div>
 	);
