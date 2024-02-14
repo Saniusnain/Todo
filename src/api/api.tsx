@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getToken } from '../utils/utilFunctions';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/',
+  baseURL: 'http://localhost:5000',
 });
 
 // Request interceptor
@@ -14,7 +14,7 @@ api.interceptors.request.use(
       config.headers = config.headers || {};
   
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = token;
       }
       return config;
     },

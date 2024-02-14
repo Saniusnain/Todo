@@ -11,7 +11,7 @@ import {
 	GENDER_ERROR,
 } from '../../utils/ErrorMessages';
 import { toast, ToastContainer } from 'react-toastify';
-
+import api from '../../api/api';
 const Signup = () => {
 	const navigate = useNavigate();
 	
@@ -70,8 +70,7 @@ const Signup = () => {
 
 		try {
 			setLoading(true);
-			const result: AxiosResponse = await axios.post(
-				'http://localhost:5000/user/register',
+			const result: AxiosResponse = await api.post('/user/register',
 				body
 			);
 			if (result && result.status === 201) {

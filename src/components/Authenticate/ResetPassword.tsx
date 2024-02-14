@@ -10,7 +10,7 @@ import {
 	PASSWORD_MISMATCH,
 } from '../../utils/ErrorMessages';
 import { toast, ToastContainer } from 'react-toastify';
-
+import api from '../../api/api';
 const ResetPassword = () => {
 	const navigate = useNavigate();
 
@@ -61,8 +61,8 @@ const ResetPassword = () => {
 
 		try {
 			setLoading(true);
-			const result: AxiosResponse = await axios.put(
-				'http://localhost:5000/user/reset-password',
+			const result: AxiosResponse = await api.put(
+				'/user/reset-password',
 				body
 			);
 			if (result && result.status === 201) {

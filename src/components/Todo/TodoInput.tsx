@@ -1,16 +1,20 @@
 import { useState, ChangeEvent, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
+import { useNavigate } from 'react-router-dom';
 import TypePill from './TypePill';
 import Loader from '../UtilComponents/Loader';
 import {
 	TODO_LENGTH_ERROR,
 	TODO_DESCRIPTION_LENGTH_ERROR,
 } from '../../utils/ErrorMessages';
-import { getToken } from '../../utils/utilFunctions';
+import { getToken, clearStorage } from '../../utils/utilFunctions';
 import { toast, ToastContainer } from 'react-toastify';
 import { useTodoContext, useTodoTypeContext } from '../../context/todoContext';
+import api from '../../api/api';
 
 const TodoInput = () => {
+	const navigate = useNavigate();
+
 	const { setTodoContext } = useTodoContext();
 	const { setTypeContext, typeContext } = useTodoTypeContext();
 
@@ -33,6 +37,22 @@ const TodoInput = () => {
 		setDescription('');
 		setErrorMessage('');
 	};
+
+	const errorToast = (message: string) => {
+		clearStorage();
+		setTimeout(() => {
+			navigate('/login');
+		}, 2000);
+		return toast.error(`❌ ${message}`, {
+			position: 'top-right',
+			autoClose: 2000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			draggable: true,
+			theme: 'light',
+		});
+	};
+
 	const addTodo = async () => {
 		if (todo.length < 3) {
 			setErrorMessage(TODO_LENGTH_ERROR);
@@ -54,15 +74,11 @@ const TodoInput = () => {
 			setLoading(true);
 			setErrorMessage('');
 
-			const result: AxiosResponse = await axios.post(
-				'http://localhost:5000/todo',
-				body,
-				{
-					headers: {
-						Authorization: token,
-					},
-				}
-			);
+			const result: AxiosResponse = await api.post(`/todo`, body, {
+				headers: {
+					Authorization: token,
+				},
+			});
 
 			if (result && result.status === 201) {
 				toast('🦄 Added Succesfully!', {
@@ -81,7 +97,9 @@ const TodoInput = () => {
 			setLoading(false);
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
-				setErrorMessage(error.response?.data.error);
+				if (error.response?.status === 406) {
+					errorToast(error.response?.data.error);
+				} else setErrorMessage(error.response?.data.error);
 			} else {
 				console.log('unexpected error: ', error);
 				setErrorMessage('An unexpected error occurred');

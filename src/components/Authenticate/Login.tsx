@@ -11,6 +11,7 @@ import {
 	setToken
 } from '../../utils/utilFunctions';
 import { EMAIL_ERROR } from '../../utils/ErrorMessages';
+import api from '../../api/api';
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -51,8 +52,8 @@ const Login = () => {
 
 		try {
 			setLoading(true);
-			const result: AxiosResponse = await axios.post(
-				'http://localhost:5000/user/login',
+			const result: AxiosResponse = await api.post(
+				'/user/login',
 				body
 			);
 			if (result && result.status === 200) {

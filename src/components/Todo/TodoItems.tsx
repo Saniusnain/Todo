@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
-import { getToken } from '../../utils/utilFunctions';
+import { useNavigate } from 'react-router-dom';
+import { getToken, clearStorage } from '../../utils/utilFunctions';
 import TodoFilter from './TodoFilter';
 import axios, { AxiosResponse } from 'axios';
 import LoadingTodo from '../UtilComponents/LoadingTodo';
 import { useTodoContext, useTodoTypeContext } from '../../context/todoContext';
+import { toast, ToastContainer } from 'react-toastify';
+
+import api from '../../api/api';
 
 interface ITodoItem {
 	_id: string;
@@ -18,7 +22,9 @@ interface ITodoItem {
 
 const TodoItems = () => {
 	const token = getToken();
-    const {setTypeContext} = useTodoTypeContext()
+    const navigate = useNavigate();
+
+	const { setTypeContext } = useTodoTypeContext();
 	const { setTodoContext, todoContext } = useTodoContext();
 	const [timeFilter, setTimeFilter] = useState('present');
 	const [statusFilter, setStatusFilter] = useState('active');
@@ -28,8 +34,6 @@ const TodoItems = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
-		console.log('todoContext 00000  ', todoContext);
-		console.log('todoContext 00000  ', todoContext.length);
 		if (todoContext.length > 0) {
 			setTodos([...todoContext, ...todos]);
 			setTodoContext([]);
@@ -40,14 +44,26 @@ const TodoItems = () => {
 		getTodos();
 	}, [statusFilter, timeFilter]);
 
+	const errorToast = (message: string) => {
+        clearStorage();
+        setTimeout(()=>{
+            navigate('/login')
+        },2000);
+		return toast.error(`❌ ${message}`, {
+			position: 'top-right',
+			autoClose: 2000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			draggable: true,
+			theme: 'light',
+		});
+	};
 	const getTodos = async () => {
 		setLoading(true);
 		setErrorMessage('');
 		try {
-			const result: AxiosResponse = await axios.get(
-				`http://localhost:5000/todo/${
-					statusFilter === 'active' ? false : true
-				}?type=${timeFilter}`,
+			const result: AxiosResponse = await api.get(
+				`/todo/${statusFilter === 'active' ? false : true}?type=${timeFilter}`,
 				{
 					headers: {
 						Authorization: token,
@@ -63,7 +79,9 @@ const TodoItems = () => {
 			setLoading(false);
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
-				setErrorMessage(error.response?.data.error);
+				if (error.response?.status === 406) {
+					errorToast(error.response?.data.error);
+				} else setErrorMessage(error.response?.data.error);
 			} else {
 				console.log('unexpected error: ', error);
 				setErrorMessage('An unexpected error occurred');
@@ -73,40 +91,11 @@ const TodoItems = () => {
 
 	const handleComplete = async (id: string, status: boolean) => {
 		setErrorMessage('');
-        setProcessingLoading(true);
-		try {
-			const result: AxiosResponse = await axios.put(
-				`http://localhost:5000/todo/${id}/${status}`,
-				{},
-				{
-					headers: {
-						Authorization: token,
-					},
-				}
-			);
-
-			if (result && result.status === 200) {
-				setTodos(todos.filter((todo) => todo._id !== id));
-                setProcessingLoading(false);
-			}
-		} catch (error) {
-            setProcessingLoading(false);
-			if (axios.isAxiosError(error)) {
-				console.log('error message: ', error.message);
-				setErrorMessage(error.response?.data.error);
-			} else {
-				console.log('unexpected error: ', error);
-				setErrorMessage('An unexpected error occurred');
-			}
-		}
-	};
-
-	const handleDelete = async (id: string) => {
-		setErrorMessage('');
 		setProcessingLoading(true);
 		try {
-			const result: AxiosResponse = await axios.delete(
-				`http://localhost:5000/todo/${id}`,
+			const result: AxiosResponse = await api.put(
+				`/todo/${id}/${status}`,
+				{},
 				{
 					headers: {
 						Authorization: token,
@@ -119,10 +108,40 @@ const TodoItems = () => {
 				setProcessingLoading(false);
 			}
 		} catch (error) {
-			setProcessingLoading(false);
+			setLoading(false);
 			if (axios.isAxiosError(error)) {
 				console.log('error message: ', error.message);
-				setErrorMessage(error.response?.data.error);
+				if (error.response?.status === 406) {
+					errorToast(error.response?.data.error);
+				} else setErrorMessage(error.response?.data.error);
+			} else {
+				console.log('unexpected error: ', error);
+				setErrorMessage('An unexpected error occurred');
+			}
+		}
+	};
+
+	const handleDelete = async (id: string) => {
+		setErrorMessage('');
+		setProcessingLoading(true);
+		try {
+			const result: AxiosResponse = await api.delete(`/todo/${id}`, {
+				headers: {
+					Authorization: token,
+				},
+			});
+
+			if (result && result.status === 200) {
+				setTodos(todos.filter((todo) => todo._id !== id));
+				setProcessingLoading(false);
+			}
+		} catch (error) {
+			setLoading(false);
+			if (axios.isAxiosError(error)) {
+				console.log('error message: ', error.message);
+				if (error.response?.status === 406) {
+					errorToast(error.response?.data.error);
+				} else setErrorMessage(error.response?.data.error);
 			} else {
 				console.log('unexpected error: ', error);
 				setErrorMessage('An unexpected error occurred');
@@ -131,7 +150,7 @@ const TodoItems = () => {
 	};
 
 	return (
-		<div className='flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80 '>
+		<div className='flex flex-col sm:px-20 mt-5 max-sm:px-10 md:px-20 lg:px-32  xl:px-80'>
 			{errorMessage && (
 				<h1 className='bg-slate-50 text-red-600 rounded px-2 py-1 w-full text-center mt-2 mb-4 font-bold max-sm:text-sm'>
 					{errorMessage}
@@ -146,7 +165,7 @@ const TodoItems = () => {
 					changeFilter={() => {
 						setTimeFilter('present');
 						setStatusFilter('active');
-                        setTypeContext('present');
+						setTypeContext('present');
 					}}
 				/>
 				<TodoFilter
@@ -157,7 +176,7 @@ const TodoItems = () => {
 					changeFilter={() => {
 						setTimeFilter('future');
 						setStatusFilter('active');
-                        setTypeContext('future');
+						setTypeContext('future');
 					}}
 				/>
 				<TodoFilter
@@ -182,7 +201,7 @@ const TodoItems = () => {
 				/>
 			</div>
 
-			<div className='bg-slate-50 rounded px-1 w-full mt-4 max-h-96'>
+			<div className='bg-slate-50  px-1 w-full mt-4 h-auto max-h-80 overflow-y-scroll overflow-x-hidden scroll-smooth'>
 				{loading ? (
 					<LoadingTodo />
 				) : todos.length === 0 ? (
@@ -201,6 +220,7 @@ const TodoItems = () => {
 					})
 				)}
 			</div>
+			<ToastContainer />
 		</div>
 	);
 };
