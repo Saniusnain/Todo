@@ -210,7 +210,7 @@ const TodoItems = () => {
 				/>
 			</div>
 
-			<div className='bg-slate-50  px-1 w-full mt-4 h-auto max-h-80 overflow-y-scroll overflow-x-hidden scroll-smooth'>
+			<div className='bg-slate-50  px-1 w-full mt-4 h-auto max-h-80 overflow-y-scroll overflow-x-hidden scroll-smooth' style={{scrollbarWidth:'thin'}}>
 				{loading ? (
 					<LoadingTodo />
 				) : todos.length === 0 ? (

@@ -10,7 +10,7 @@ const Button = ({loading, text, links}:ButtonProps) => {
 	return (
 		<>
 			<button
-				className='max-sm:w-4/5 sm:w-2/4 max-sm:px-2 max-sm:py-1 max-sm:text-md sm:px-4 sm:py-2 sm:text-xl font-semibold text-white transition rounded  hover:translate-y-0.5 bg-pink-500 hover:bg-pink-500/95'
+				className='max-sm:w-4/5 sm:w-2/4 max-sm:px-2 max-sm:py-1 max-sm:text-md sm:px-4 sm:py-2 sm:text-xl font-semibold text-white transition rounded  hover:translate-y-0.5 bg-pink-400/100 hover:bg-pink-500/100'
 				type='submit'
 			>
 				{loading ? <Loader /> : text}
