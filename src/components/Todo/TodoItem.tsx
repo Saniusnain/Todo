@@ -3,21 +3,23 @@ import { AiOutlineDelete } from 'react-icons/ai';
 import { FiEdit2 } from 'react-icons/fi';
 import { IoIosArrowDown } from 'react-icons/io';
 import Loader from '../UtilComponents/Loader';
+
+interface TTodo {
+	_id: string;
+	text: string;
+	completed: boolean;
+	description: string;
+	type: string;
+	user_id: string;
+	__v: number;
+	edit?: boolean;
+}
 interface ITodoItem {
-	todo: {
-		_id: string;
-		text: string;
-		completed: boolean;
-		description: string;
-		type: string;
-		user_id: string;
-		__v: number;
-		edit?: boolean;
-	};
+	todo: TTodo,
 	handleComplete: (id: string, status: boolean) => void;
 	handleDelete: (id: string) => void;
 	processingLoading: boolean;
-	setTodoContext:React.Dispatch<React.SetStateAction<ITodoItem[]>>
+	setTodoContext: React.Dispatch<React.SetStateAction<TTodo[]>>;
 }
 
 const TodoItem = ({
@@ -25,14 +27,13 @@ const TodoItem = ({
 	handleComplete,
 	handleDelete,
 	processingLoading,
-	setTodoContext
+	setTodoContext,
 }: ITodoItem) => {
-
 	const [showDescription, setShowDescription] = useState('');
 	const [selectedItemId, setSelectedItemId] = useState('');
 
-	const handleEdit = (item: ITodoItem) => {
-		// item["edit"] = true;
+	const handleEdit = (item: TTodo) => {
+		item["edit"] = true;
 		setTodoContext([item]);
 	};
 
@@ -52,7 +53,7 @@ const TodoItem = ({
 						}}
 					/>
 				)}
-				<div className='flex flex-col'>
+				<div className='flex flex-col flex-wrap text-wrap'>
 					<p className='ml-5 flex items-center sm:text-lg font-semibold'>
 						{todo.text}
 						<span
@@ -89,7 +90,10 @@ const TodoItem = ({
 				</div>
 			</div>
 			<div className='flex items-center ml-3'>
-				<FiEdit2 className='mr-3 sm:text-xl cursor-pointer hover:text-green-400' onClick={() => handleEdit(todo)}/>
+				<FiEdit2
+					className='mr-3 sm:text-xl cursor-pointer hover:text-green-400'
+					onClick={() => handleEdit(todo)}
+				/>
 				<AiOutlineDelete
 					className={`sm:text-xl cursor-pointer hover:text-red-500`}
 					onClick={() => {

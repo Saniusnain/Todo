@@ -15,7 +15,7 @@ import api from '../../api/api';
 const TodoInput = () => {
 	const navigate = useNavigate();
 
-	const { setTodoContext } = useTodoContext();
+	const { setTodoContext, todoContext } = useTodoContext();
 	const { setTypeContext, typeContext } = useTodoTypeContext();
 
 	const [todoType, setTodoType] = useState('present');
@@ -23,6 +23,21 @@ const TodoInput = () => {
 	const [todo, setTodo] = useState('');
 	const [description, setDescription] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+	const [edit, setEdit] = useState(false);
+	const [id, setId] = useState('');
+
+	useEffect(() => {
+		if (todoContext?.length > 0 && todoContext[0]?.edit) {
+			console.log('editing --- ', todoContext);
+			const todo = todoContext[0];
+			setEdit(true);
+			setId(todo._id);
+			setTodoType(todo.type);
+			setTodo(todo.text);
+			setDescription(todo.description);
+			setTodoContext([]);
+		}
+	}, [todoContext]);
 
 	useEffect(() => {
 		if (typeContext !== '') {
@@ -74,13 +89,22 @@ const TodoInput = () => {
 			setLoading(true);
 			setErrorMessage('');
 
-			const result: AxiosResponse = await api.post(`/todo`, body, {
-				headers: {
-					Authorization: token,
-				},
-			});
+			let result: AxiosResponse;
+			if (edit) {
+				result = await api.put(`/todo/${id}`, body, {
+					headers: {
+						Authorization: token,
+					},
+				});
+			} else {
+				result = await api.post(`/todo`, body, {
+					headers: {
+						Authorization: token,
+					},
+				});
+			}
 
-			if (result && result.status === 201) {
+			if (result && (result.status === 201 || result.status === 200)) {
 				// toast('🦄 Added Succesfully!', {
 				// 	position: 'top-right',
 				// 	autoClose: 2000,
@@ -89,8 +113,9 @@ const TodoInput = () => {
 				// 	draggable: true,
 				// 	theme: 'light',
 				// });
-				const todo = result.data.todo;
-				todo["edit"] = false
+				setEdit(false);
+				const todo = result?.data?.todo;
+				todo['edit'] = false;
 				setTodoContext([todo]);
 				setLoading(false);
 				resetStates();
@@ -131,7 +156,7 @@ const TodoInput = () => {
 					className='rounded-md px-3 ml-3 py-2 text-center bg-pink-500 hover:bg-pink-500/95 text-white max-sm:font-medium sm:font-bold max-sm:text-sm sm:text-xl'
 					onClick={() => todo !== '' && addTodo()}
 				>
-					{loading ? <Loader /> : 'Add todo'}
+					{loading ? <Loader /> : edit ? 'Save Edit' : 'Add todo'}
 				</button>
 			</div>
 
