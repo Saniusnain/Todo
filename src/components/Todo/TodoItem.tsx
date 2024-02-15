@@ -15,7 +15,7 @@ interface TTodo {
 	edit?: boolean;
 }
 interface ITodoItem {
-	todo: TTodo,
+	todo: TTodo;
 	handleComplete: (id: string, status: boolean) => void;
 	handleDelete: (id: string) => void;
 	processingLoading: boolean;
@@ -33,7 +33,7 @@ const TodoItem = ({
 	const [selectedItemId, setSelectedItemId] = useState('');
 
 	const handleEdit = (item: TTodo) => {
-		item["edit"] = true;
+		item['edit'] = true;
 		setTodoContext([item]);
 	};
 
@@ -90,10 +90,12 @@ const TodoItem = ({
 				</div>
 			</div>
 			<div className='flex items-center ml-3'>
-				<FiEdit2
-					className='mr-3 sm:text-xl cursor-pointer hover:text-green-400'
-					onClick={() => handleEdit(todo)}
-				/>
+				{!todo.completed && (
+					<FiEdit2
+						className='mr-3 sm:text-xl cursor-pointer hover:text-green-400'
+						onClick={() => handleEdit(todo)}
+					/>
+				)}
 				<AiOutlineDelete
 					className={`sm:text-xl cursor-pointer hover:text-red-500`}
 					onClick={() => {
