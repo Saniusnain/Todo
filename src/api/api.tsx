@@ -1,35 +1,40 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { getToken } from '../utils/utilFunctions';
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { getToken } from "../utils/utilFunctions";
+
+const baseURL: string | undefined =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000" // Local development server
+    : process.env.REACT_APP_SERVER_URL; // Replace with your deployed server URL
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: baseURL,
 });
 
 // Request interceptor
 api.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
-      const token = getToken();
-      
-      // Ensure headers object exists
-      config.headers = config.headers || {};
-  
-      if (token) {
-        config.headers.Authorization = token;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
+  (config: AxiosRequestConfig) => {
+    const token = getToken();
+
+    // Ensure headers object exists
+    config.headers = config.headers || {};
+
+    if (token) {
+      config.headers.Authorization = token;
     }
-  );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Response interceptor
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-     return response;
+    return response;
   },
   (error) => {
-      return Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 
