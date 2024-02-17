@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { getToken } from "../utils/utilFunctions";
 
 const baseURL: string | undefined =
@@ -12,7 +12,7 @@ const api = axios.create({
 
 // Request interceptor
 api.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config) => {
     const token = getToken();
 
     // Ensure headers object exists
