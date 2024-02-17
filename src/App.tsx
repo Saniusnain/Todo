@@ -1,11 +1,11 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 const TodoComponent = lazy(() => import("./components/Todo/TodoComponent"));
 const Login = lazy(() => import("./components/Authenticate/Login"));
 const Signup = lazy(() => import("./components/Authenticate/Signup"));
 const ResetPassword = lazy(
   () => import("./components/Authenticate/ResetPassword")
 );
-import LoadingScreen from "./components/UtilComponents/LoadingScreen";
+// import LoadingScreen from "./components/UtilComponents/LoadingScreen";
 import { TodoProvider, TodoTypeProvider } from "./context/todoContext";
 
 import {
@@ -15,7 +15,7 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-import NotFound from "./components/UtilComponents/NotFound";
+// import NotFound from "./components/UtilComponents/NotFound";
 
 const PrivateRoutes = () => {
   const auth = localStorage.getItem("userId");
