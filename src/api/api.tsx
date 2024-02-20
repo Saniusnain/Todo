@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { getToken } from "../utils/utilFunctions";
 
-const baseURL: string | undefined =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:5000" // Local development server
-    : process.env.REACT_APP_SERVER_URL; // Replace with your deployed server URL
+const baseURL: string | undefined = "https://todo-server-393f0ac60da7.herokuapp.com";
+  // process.env.NODE_ENV === "development"
+  //   ? "http://localhost:5000" // Local development server
+  //   : process.env.REACT_APP_SERVER_URL; // Replace with your deployed server URL
 
 const api = axios.create({
   baseURL: baseURL,
