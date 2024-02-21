@@ -37,7 +37,7 @@ function App() {
                 <Route element={<PrivateRoutes />}>
                   <Route path="/" element={<TodoComponent />} />
                 </Route>
-                {/* <Route path="*" element={<NotFound />} /> */}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </BrowserRouter>
