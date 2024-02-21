@@ -15,7 +15,7 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-// import NotFound from "./components/UtilComponents/NotFound";
+import NotFound from "./components/UtilComponents/NotFound";
 
 const PrivateRoutes = () => {
   const auth = localStorage.getItem("userId");
