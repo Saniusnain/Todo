@@ -73,10 +73,13 @@ const Login = () => {
     }
   };
 
+  const a = process.env.REACT_APP_SERVER_URL
+
+
   return (
     <div className="flex flex-col items-center justify-center h-screen font-space">
       <LogoHeader />
-
+      {a}
       <div>
         <form
           onSubmit={handleSubmit}
@@ -118,7 +121,6 @@ const Login = () => {
               Show Password
             </label>
           </div>
-
           <Button
             loading={loading}
             text="Login"
