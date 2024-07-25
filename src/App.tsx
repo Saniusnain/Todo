@@ -19,7 +19,7 @@ import NotFound from "./components/UtilComponents/NotFound";
 
 const PrivateRoutes = () => {
   const auth = localStorage.getItem("userId");
-  console.log("auth  ", auth);
+  // console.log("auth  ", auth);
   return auth ? <Outlet /> : <Navigate to="/login" />;
 };
 

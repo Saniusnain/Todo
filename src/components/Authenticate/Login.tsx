@@ -18,7 +18,6 @@ const Login = () => {
 
   useEffect(() => {
     const userId = getUserId();
-    console.log("user id: ", userId)
     if (userId) {
       navigate("/");
     }

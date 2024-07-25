@@ -35,7 +35,7 @@ const TodoItems = () => {
 
 	useEffect(() => {
 		if (todoContext?.length > 0 && !todoContext[0]?.edit) {
-			console.log('cCONTEZT--- ', todoContext);
+			// console.log('cCONTEZT--- ', todoContext);
 
 			if (timeFilter !== todoContext[0].type) {
 				setTimeFilter(todoContext[0].type);

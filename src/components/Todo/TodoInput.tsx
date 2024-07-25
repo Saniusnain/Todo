@@ -28,7 +28,7 @@ const TodoInput = () => {
 
 	useEffect(() => {
 		if (todoContext?.length > 0 && todoContext[0]?.edit) {
-			console.log('editing --- ', todoContext);
+			// console.log('editing --- ', todoContext);
 			const todo = todoContext[0];
 			setEdit(true);
 			setId(todo._id);
