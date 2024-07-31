@@ -27,7 +27,7 @@ function App() {
   return (
     <TodoTypeProvider>
       <TodoProvider>
-        <div className="bg-blue-800 selection:bg-pink-400 selection:text-white">
+        <div className="min-h-screen bg-blue-800 selection:bg-pink-400 selection:text-white">
           <BrowserRouter>
             <Suspense fallback={<LoadingScreen />}>
               <Routes>
